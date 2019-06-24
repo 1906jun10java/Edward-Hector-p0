@@ -3,10 +3,11 @@ package com.revature.beans;
 public class Offer {
 	
 	private Car car;
-	private double offer;
+	private double offerAmmount;
 	private String status;
 	private int offerNumber;
 	private static int Number=1;
+	private Customer userThatMadeOffer;
 	
 	
 	public Offer() {
@@ -15,11 +16,12 @@ public class Offer {
 	}
 
 
-	public Offer(Car car, double offer) {
+	public Offer(Car car, double offer,Customer user) {
 		super();
 		this.car = car;
-		this.offer = offer;
+		this.offerAmmount = offer;
 		this.status = "pending";
+		this.userThatMadeOffer=user;
 		this.offerNumber=Number;
 		Number++;
 	}
@@ -27,8 +29,19 @@ public class Offer {
 
 	
 	
-	public double getOffer() {
-		return offer;
+	public int getOfferNumber() {
+		return offerNumber;
+	}
+
+
+	public Customer getUserThatMadeOffer() {
+		return userThatMadeOffer;
+	}
+	
+
+
+	public double getOfferAmmount() {
+		return offerAmmount;
 	}
 
 
@@ -42,9 +55,7 @@ public class Offer {
 	}
 
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	
 	
 
 }

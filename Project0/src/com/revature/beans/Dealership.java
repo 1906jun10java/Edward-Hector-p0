@@ -6,16 +6,16 @@ public class Dealership {
 	
 	
 	
-	Map<Integer,Car> carMap;
+	public static Map<Integer,Car> carMap;
 	
-	Map<String,Employee> employeeMap;
+	public static Map<String,Employee> employeeMap;
 	
-	Map<String,Customer> customerMap;
+	public static Map<String,Customer> customerMap;
 	
-	Map<Integer,Offer> pendingOffers;
+	public static Map<Integer,Offer> pendingOffers;
 	
-	Map<Integer,Offer> acceptedOffers;
+	public static Map<Integer,Offer> acceptedOffers;
 	
-	Map<Integer,Offer> rejectedOffers;
+	public static Map<Integer,Offer> rejectedOffers;
 
 }
