@@ -1,10 +1,12 @@
-package com.revature.beens;
+package com.revature.beans;
 
 public class Offer {
 	
 	private Car car;
 	private double offer;
 	private String status;
+	private int offerNumber;
+	private static int Number=1;
 	
 	
 	public Offer() {
@@ -18,16 +20,20 @@ public class Offer {
 		this.car = car;
 		this.offer = offer;
 		this.status = "pending";
+		this.offerNumber=Number;
+		Number++;
+	}
+
+
+	
+	
+	public double getOffer() {
+		return offer;
 	}
 
 
 	public Car getCar() {
 		return car;
-	}
-
-
-	public void setOffer(double offer) {
-		this.offer = offer;
 	}
 
 
@@ -39,9 +45,6 @@ public class Offer {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
-	
 	
 
 }

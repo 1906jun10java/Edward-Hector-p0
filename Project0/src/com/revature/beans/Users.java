@@ -1,4 +1,4 @@
-package com.revature.beens;
+package com.revature.beans;
 
 import java.util.ArrayList;
 

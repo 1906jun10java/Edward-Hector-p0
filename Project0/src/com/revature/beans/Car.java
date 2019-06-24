@@ -1,12 +1,15 @@
-package com.revature.beens;
+package com.revature.beans;
 
 public class Car {
+	
 	
 	private String make;
 	private String model;
 	private String color;
 	private int makeYear;
 	private double msrp;
+	private int id;
+	private static int ID=1;
 	
 	public Car() {
 		super();
@@ -21,8 +24,15 @@ public class Car {
 		this.color = color;
 		this.makeYear = makeYear;
 		this.msrp = msrp;
+		this.id=ID;
+		ID++;
 	}
 
+
+
+	public int getId() {
+		return id;
+	}
 
 
 	public String getMake() {
