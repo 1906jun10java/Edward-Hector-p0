@@ -4,8 +4,6 @@ import java.util.Map;
 
 public class Dealership {
 	
-	
-	
 	public static Map<Integer,Car> carMap;
 	
 	public static Map<String,Employee> employeeMap;
@@ -17,5 +15,5 @@ public class Dealership {
 	public static Map<Integer,Offer> acceptedOffers;
 	
 	public static Map<Integer,Offer> rejectedOffers;
-
+	
 }

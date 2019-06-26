@@ -11,6 +11,10 @@ import com.revature.beans.Users;
 ;
 public class employeeFuntions {
 	
+	
+	/*
+	 * Will make calls to DealershipDao interface
+	 */
 	public void addCar(String make,String model,String color,int makeYear,double msrp) {
 		Car newCar=new Car(make,model,color,makeYear,msrp);
 	
