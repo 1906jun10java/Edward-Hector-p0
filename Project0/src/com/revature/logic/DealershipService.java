@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.revature.beans.Car;
 import com.revature.beans.Dealership;
+import com.revature.datalayer.DealershipDao;
 
 public class DealershipService implements DealershipDao {
 

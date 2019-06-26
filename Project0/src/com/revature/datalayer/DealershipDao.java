@@ -1,4 +1,4 @@
-package com.revature.logic;
+package com.revature.datalayer;
 
 import java.util.ArrayList;
 import com.revature.beans.*;
