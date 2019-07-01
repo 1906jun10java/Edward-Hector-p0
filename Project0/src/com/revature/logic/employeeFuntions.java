@@ -1,5 +1,6 @@
 package com.revature.logic;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,19 @@ public class employeeFuntions {
 		Car newCar=new Car(make,model,color,makeYear,msrp);
 	
 		Dealership.carMap.put(newCar.getId(), newCar);
+	}
+	
+	public int paymentsMadeOnOffer(int offerID) {
+		Offer offer=Dealership.acceptedOffers.get(offerID);
+		return offer.getNumberOfPayments()-offer.getPaymentsRemaining();
+	}
+	
+	public Collection<Offer> getPendingOfferList(){
+		return Dealership.pendingOffers.values();
+	}
+	
+	public Collection<Offer> getAcceptedOfferList(){
+		return Dealership.acceptedOffers.values();
 	}
 	
 	public void accpetOffer(int offerID) {

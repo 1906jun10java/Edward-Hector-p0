@@ -1,6 +1,6 @@
 package com.revature.beans;
 
-import java.util.ArrayList;
+
 
 public abstract class Users {
 	
