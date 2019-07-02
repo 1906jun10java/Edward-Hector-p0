@@ -1,6 +1,6 @@
 package com.revature.beans;
 
-import java.util.ArrayList;
+
 
 public abstract class Users {
 	
@@ -8,19 +8,34 @@ public abstract class Users {
 	private String password;
 	private String firstName;
 	private String lastName;
+	private int userID;
+	private static int UID=1;
+	private String userType;
 	
 	public Users() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Users(String userName, String password, String firstName, String lastName) {
+	public Users(String userName, String password, String firstName, String lastName,String userType) {
 		super();
 		this.userName = userName;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		
+		this.userType=userType;
+		this.userID=UID;
+		UID++;
 	}
+	
+	
+	public int getUserID() {
+		return userID;
+	}
+	
+	public String getUserType() {
+		return userType;
+	}
+	
 	public String getUserName() {
 		return userName;
 	}
