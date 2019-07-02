@@ -10,6 +10,7 @@ public class Car {
 	private double msrp;
 	private int id;
 	private static int ID=1;
+	private Users owner;
 	
 	
 	public Car() {
