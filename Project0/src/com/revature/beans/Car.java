@@ -10,6 +10,8 @@ public class Car {
 	private double msrp;
 	private int id;
 	private static int ID=1;
+	private Users owner;
+	
 	
 	public Car() {
 		super();
@@ -39,17 +41,11 @@ public class Car {
 		return make;
 	}
 
-	public void setMake(String make) {
-		this.make = make;
-	}
 
 	public String getModel() {
 		return model;
 	}
 
-	public void setModel(String model) {
-		this.model = model;
-	}
 
 	public String getColor() {
 		return color;
@@ -61,10 +57,6 @@ public class Car {
 
 	public int getMakeYear() {
 		return makeYear;
-	}
-
-	public void setMakeYear(int makeYear) {
-		this.makeYear = makeYear;
 	}
 
 	public double getMsrp() {
