@@ -89,7 +89,7 @@ public class DealershipDBService implements DealershipDao {
 	@Override
 	//Grabs all cars currently in the dealership
 	public HashMap<Integer, Car> grabCarMap() throws SQLException {
-		HashMap<Integer, Car> cMap = new HashMap<Integer, Car>();
+		Map<Integer, Car> cMap = new HashMap<Integer, Car>();
 		Connection conn = cF.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet rS = stmt.executeQuery("SELECT * FROM CAR");
@@ -139,7 +139,7 @@ public class DealershipDBService implements DealershipDao {
 
 	@Override
 	public HashMap<Integer, Customer> grabCustomerMap() throws SQLException {
-		HashMap<Integer, Customer> cMap = new HashMap<Integer, Customer>();
+		Map<Integer, Customer> cMap = new HashMap<Integer, Customer>();
 		Connection conn = cF.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet rS = stmt.executeQuery("SELECT * FROM DEALERSHIP_USER WHERE IS_EMPLOYEE = 0");
@@ -169,28 +169,15 @@ public class DealershipDBService implements DealershipDao {
 
 
 	@Override
-	public void pushOfferMaps() throws SQLException {
-		// TODO Auto-generated method stub
+	public void pushOfferMap() throws SQLException {
+		
 		
 	}
 
 	@Override
-	public HashMap<Integer, Offer> grabPendingOffers() throws SQLException {
+	public HashMap<Integer, Offer> grabOfferMap() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public HashMap<Integer, Offer> grabRejectedOffers() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HashMap<Integer, Offer> grabAcceptedOffers() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 }

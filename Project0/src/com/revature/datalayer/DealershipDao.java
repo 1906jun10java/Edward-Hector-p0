@@ -13,14 +13,13 @@ public interface DealershipDao {
 	public void pushCarMap() throws SQLException;
 	public HashMap<Integer, Car> grabCarMap() throws SQLException;
 	
+	//May be changed to UserMap
 	public void pushCustomerMap() throws SQLException;
 	public HashMap<Integer, Customer> grabCustomerMap() throws SQLException;
 	
 	public void pushEmployeeMap() throws SQLException;
 	public HashMap<Integer, Employee> grabEmployeeMap() throws SQLException;
 	
-	public void pushOfferMaps() throws SQLException;
-	public HashMap<Integer, Offer> grabPendingOffers() throws SQLException;
-	public HashMap<Integer, Offer> grabRejectedOffers() throws SQLException;
-	public HashMap<Integer, Offer> grabAcceptedOffers() throws SQLException;
+	public void pushOfferMap() throws SQLException;
+	public HashMap<Integer, Offer> grabOfferMap() throws SQLException;
 }
