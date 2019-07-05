@@ -67,7 +67,7 @@ public abstract class Users {
 		return "Users [userName=" + userName + ", password=" + password + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", userID=" + userID + ", userType=" + userType + "]";
 	}
-	
+
 	//Needed to prevent false increments when grabbing from DB
 	public void setId(int int1) {
 		this.userID = int1;
