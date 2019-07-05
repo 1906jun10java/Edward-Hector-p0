@@ -1,30 +1,26 @@
 package com.revature.datalayer;
 
-import java.util.ArrayList;
-import com.revature.beans.*;
+import java.sql.SQLException;
+import java.util.HashMap;
+
+import com.revature.beans.Car;
+import com.revature.beans.Customer;
+import com.revature.beans.Employee;
+import com.revature.beans.Offer;
 
 public interface DealershipDao {
 	
-	//Customer, Employee retrievers
-	public Employee getEmployee(String userName);
-	public Employee addEmployee(Employee e);
-	public Customer getCustomer(String userName);
-	public Customer addCustomer(Customer c);
+	public void pushCarMap() throws SQLException;
+	public HashMap<Integer, Car> grabCarMap() throws SQLException;
 	
-	//Car lot methods
-	public void addCar(Car c);
-	public void removeCar(Car c); 
-	public void transferCarToCustomer(Car c, Customer customer);
-	public ArrayList<Car> getCarsOnLot();
+	public void pushCustomerMap() throws SQLException;
+	public HashMap<Integer, Customer> grabCustomerMap() throws SQLException;
 	
-	//Pending Offer methods
-	//reject and accept moves a pending offer into respective offer map
-	public void makeOffer(Offer o);
-	public void rejectOffer(Offer o);
-	public void acceptOffer(Offer o);
+	public void pushEmployeeMap() throws SQLException;
+	public HashMap<Integer, Employee> grabEmployeeMap() throws SQLException;
 	
-	//System
-	//calc Payments
-	public int calculateMonthlyPayment(Offer o);
-	
+	public void pushOfferMaps() throws SQLException;
+	public HashMap<Integer, Offer> grabPendingOffers() throws SQLException;
+	public HashMap<Integer, Offer> grabRejectedOffers() throws SQLException;
+	public HashMap<Integer, Offer> grabAcceptedOffers() throws SQLException;
 }
