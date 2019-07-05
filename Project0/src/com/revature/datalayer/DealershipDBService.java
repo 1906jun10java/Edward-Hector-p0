@@ -14,6 +14,7 @@ import com.revature.beans.Customer;
 import com.revature.beans.Dealership;
 import com.revature.beans.Employee;
 import com.revature.beans.Offer;
+import com.revature.beans.Users;
 import com.revature.conn.ConnFactory;
 
 public class DealershipDBService implements DealershipDao {
@@ -27,7 +28,7 @@ public class DealershipDBService implements DealershipDao {
 		Car testCar3 = new Car("Parick","Wagon3","silver", 2012,12000d);
 		Car testCar4 = new Car("Paddy","Wagon4","orange", 2011,14000d);
 		Customer testCust = new Customer("testman","testpass","Test","Man");
-		Dealership.customerMap.put(testCust.getUserName(), testCust);
+		Dealership.userMap.put(testCust.getUserName(), testCust);
 		testCar2.setOwner(testCust); //No users, means no fk, means no entry
 		Dealership.carMap.put(testCar.getId(), testCar);
 		Dealership.carMap.put(testCar2.getId(), testCar2);
@@ -36,7 +37,7 @@ public class DealershipDBService implements DealershipDao {
 		testCar4.setOwner(testCust);
 		
 		try {
-			dbsrv.pushCustomerMap();
+			dbsrv.pushUserMap();
 			dbsrv.pushCarMap();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -89,7 +90,7 @@ public class DealershipDBService implements DealershipDao {
 	@Override
 	//Grabs all cars currently in the dealership
 	public HashMap<Integer, Car> grabCarMap() throws SQLException {
-		Map<Integer, Car> cMap = new HashMap<Integer, Car>();
+		HashMap<Integer, Car> cMap = new HashMap<Integer, Car>();
 		Connection conn = cF.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet rS = stmt.executeQuery("SELECT * FROM CAR");
@@ -105,16 +106,16 @@ public class DealershipDBService implements DealershipDao {
 	}
 
 	@Override
-	public void pushCustomerMap() throws SQLException {
+	public void pushUserMap() throws SQLException {
 		
-		Map<Integer, Customer> diffCust = grabCustomerMap();
-		for(Customer c : diffCust.values()) {
-			System.out.println("diffCust "+c.getUserName()+" "+c.getUserID());
+		Map<Integer, Users> diffCust = grabUserMap();
+		for(Users u : diffCust.values()) {
+			System.out.println("diffCust "+u.getUserName()+" "+u.getUserID());
 		}
-		for (Customer c : Dealership.customerMap.values()) {
-			System.out.println("allDealerCust: "+c.getUserName()+" "+c.getUserID());
-		    if(!diffCust.containsValue(c)) {
-		    	insertCustomer(c);
+		for (Users u : Dealership.userMap.values()) {
+			System.out.println("allDealerCust: "+u.getUserName()+" "+u.getUserID());
+		    if(!diffCust.containsValue(u)) {
+		    	insertUser(u);
 		    } 
 		}
 	}
@@ -127,46 +128,41 @@ public class DealershipDBService implements DealershipDao {
 		call.execute();
 	}
 
-	private void insertCustomer(Customer c) throws SQLException {
+	private void insertUser(Users u) throws SQLException {
 		Connection conn = cF.getConnection();
-		String sql = "INSERT INTO DEALERSHIP_USER VALUES ("+c.getUserID()+",'"+c.getFirstName()+"','"+c.getLastName()+"','"+
-		c.getUserName()+"','"+c.getPassword()+"',"+0+")";
-		System.out.println("CUSTOMER: \n"+ sql);
+		String sql = "INSERT INTO DEALERSHIP_USER VALUES ("+u.getUserID()+",'"+u.getFirstName()+"','"+u.getLastName()+"','"+
+		u.getUserName()+"','"+u.getPassword()+"',"+0+")";
+		//System.out.println("CUSTOMER: \n"+ sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
 		
 	}
 
 	@Override
-	public HashMap<Integer, Customer> grabCustomerMap() throws SQLException {
-		Map<Integer, Customer> cMap = new HashMap<Integer, Customer>();
+	public HashMap<Integer, Users> grabUserMap() throws SQLException {
+		HashMap<Integer, Users> cMap = new HashMap<Integer, Users>();
 		Connection conn = cF.getConnection();
 		Statement stmt = conn.createStatement();
-		ResultSet rS = stmt.executeQuery("SELECT * FROM DEALERSHIP_USER WHERE IS_EMPLOYEE = 0");
+		ResultSet rS = stmt.executeQuery("SELECT * FROM DEALERSHIP_USER");
 		Customer c = null;
+		Employee e = null;
+		//TODO add if statement depending on rS.getInt(6)
 		while(rS.next()) {
-			c = new Customer(rS.getString(4), rS.getString(5), rS.getString(2), rS.getString(3));
-			c.setId(rS.getInt(1)); //sets ID to the one stored in the DB manually,
-			Customer.forceCounterDown(); //and prevents our id generator logic in Car.java from misbehaving
-			cMap.put(new Integer(c.getUserID()), c);
+			if (rS.getInt(6) == 0) {
+				c = new Customer(rS.getString(4), rS.getString(5), rS.getString(2), rS.getString(3));
+				c.setId(rS.getInt(1)); //sets ID to the one stored in the DB manually,
+				Users.forceCounterDown(); //and prevents our id generator logic in Car.java from misbehaving
+				cMap.put(new Integer(c.getUserID()), c);
+			} else if (rS.getInt(6) == 1){
+				e = new Employee(rS.getString(4), rS.getString(5), rS.getString(2), rS.getString(3));
+				e.setId(rS.getInt(1));
+				Users.forceCounterDown(); //and prevents our id generator logic in Car.java from misbehaving
+				cMap.put(new Integer(e.getUserID()), e);
+			}
 		}
 		
 		return cMap;
 	}
-
-	@Override
-	public void pushEmployeeMap() throws SQLException {
-		
-		
-	}
-
-	@Override
-	public HashMap<Integer, Employee> grabEmployeeMap() throws SQLException {
-		
-		
-		return null;
-	}
-
 
 	@Override
 	public void pushOfferMap() throws SQLException {
