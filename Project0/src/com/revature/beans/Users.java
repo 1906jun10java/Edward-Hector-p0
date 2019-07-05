@@ -14,7 +14,9 @@ public abstract class Users {
 	
 	public Users() {
 		super();
-		// TODO Auto-generated constructor stub
+		//empty constructor used to init Dealership Emp with reserved ID
+		this.userName = "Dealership";
+		this.userID = -1;
 	}
 	public Users(String userName, String password, String firstName, String lastName,String userType) {
 		super();
@@ -65,6 +67,46 @@ public abstract class Users {
 		return "Users [userName=" + userName + ", password=" + password + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", userID=" + userID + ", userType=" + userType + "]";
 	}
-	
 
+	//Needed to prevent false increments when grabbing from DB
+	public void setId(int int1) {
+		this.userID = int1;
+	}
+	//prevents ID from incrementing when grabbing cars from DB
+	public static void forceCounterDown() {
+		UID--;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + userID;
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Users other = (Users) obj;
+		if (userID != other.userID)
+			return false;
+		if (userName == null) {
+			if (other.userName != null)
+				return false;
+		} else if (!userName.equals(other.userName))
+			return false;
+		if (userType == null) {
+			if (other.userType != null)
+				return false;
+		} else if (!userType.equals(other.userType))
+			return false;
+		return true;
+	}
+	
 }

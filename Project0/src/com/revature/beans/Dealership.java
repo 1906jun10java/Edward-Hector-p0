@@ -4,22 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Dealership {
+	public static Employee systemEmp = new Employee();
 	
-
-	public static Map<Integer,Car> carMap;
+	public static Map<Integer,Car> carMap = new HashMap<>();
 	
-	public static Map<String,Employee> employeeMap;
+	//To be changed to user map
+	public static Map<String,Employee> employeeMap = new HashMap<>();
 	
-	public static Map<String,Customer> customerMap=new HashMap<>();
+	public static Map<String,Users> userMap = new HashMap();
 	
-	public static Map<String,Users> userMap;
-	
-	public static Map<Integer,Offer> pendingOffers;
-	
-	public static Map<Integer,Offer> acceptedOffers;
-	
-	public static Map<Integer,Offer> rejectedOffers;
-	
-	
-
+	public static Map<Integer,Offer> offerMap = new HashMap<>();
 }
