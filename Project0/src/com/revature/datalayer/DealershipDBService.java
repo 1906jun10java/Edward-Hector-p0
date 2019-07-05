@@ -61,6 +61,13 @@ public class DealershipDBService implements DealershipDao {
 			e.printStackTrace();
 		}
 		for(Offer o: Dealership.offerMap.values()) {
+			o.setPaymentsRemaining(o.getPaymentsRemaining()-1);
+			try {
+				dbsrv.updateOfferPayments(o);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println(o.toString());
 		}
 		System.out.println("Done printing offers");
@@ -70,6 +77,10 @@ public class DealershipDBService implements DealershipDao {
 			} else {
 				System.out.println(c.getId()+" "+c.getMake()+" "+c.getModel()+" Ownedby: DEALERSHIP");
 			}
+		}
+		System.out.println("Done printing cars");
+		for(Users u : Dealership.userMap.values()) {
+			System.out.println(u.getUserName()+" is "+u.getUserType());
 		}
 	}
 	
