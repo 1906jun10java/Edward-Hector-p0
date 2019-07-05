@@ -4,7 +4,7 @@ public class Offer {
 	
 	private Car car;
 	private double offerAmmount;
-	private String status;
+	private int status; //0-3
 	private int offerNumber;
 	private static int Number=1;
 	private Customer userThatMadeOffer;
@@ -26,9 +26,10 @@ public class Offer {
 		super();
 		this.car = car;
 		this.offerAmmount = offerAmmount;
-		this.status = "pending";
+		this.status = 0;
 		this.userThatMadeOffer=user;
 		this.numberOfPayments=numberOfPayments;
+		this.paymentsRemaining = numberOfPayments;
 		this.interestRate=interestRate;
 		this.offerNumber=Number;
 		Number++;
@@ -72,15 +73,84 @@ public class Offer {
 	}
 
 
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
 
+	public void setNumberOfPayments(int numberOfPayments) {
+		this.numberOfPayments = numberOfPayments;
+	}
 
 
+	public void setPaymentsRemaining(int paymentsRemaining) {
+		this.paymentsRemaining = paymentsRemaining;
+	}
 
-	
-	
+
+	public int getId() {
+		return this.offerNumber;
+	}
+	//Needed to prevent false increments when grabbing from DB
+	public void setId(int int1) {
+		this.offerNumber = int1;
+	}
+	//prevents ID from incrementing when grabbing cars from DB
+	public static void forceCounterDown() {
+		Number--;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Offer [car=" + car.getId() + ", offerAmmount=" + offerAmmount + ", status=" + status + ", offerNumber="
+				+ offerNumber + ", userThatMadeOffer=" + userThatMadeOffer.getUserName() + ", numberOfPayments=" + numberOfPayments
+				+ ", interestRate=" + interestRate + ", paymentsRemaining=" + paymentsRemaining + "]";
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((car == null) ? 0 : car.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(offerAmmount);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + offerNumber;
+		result = prime * result + status;
+		result = prime * result + ((userThatMadeOffer == null) ? 0 : userThatMadeOffer.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Offer other = (Offer) obj;
+		if (car == null) {
+			if (other.car != null)
+				return false;
+		} else if (!car.equals(other.car))
+			return false;
+		if (Double.doubleToLongBits(offerAmmount) != Double.doubleToLongBits(other.offerAmmount))
+			return false;
+		if (offerNumber != other.offerNumber)
+			return false;
+		if (status != other.status)
+			return false;
+		if (userThatMadeOffer == null) {
+			if (other.userThatMadeOffer != null)
+				return false;
+		} else if (!userThatMadeOffer.equals(other.userThatMadeOffer))
+			return false;
+		return true;
+	}
+
 
 }

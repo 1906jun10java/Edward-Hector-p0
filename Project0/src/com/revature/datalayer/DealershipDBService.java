@@ -23,27 +23,54 @@ public class DealershipDBService implements DealershipDao {
 	//might just make the whole thing static
 	public static void main(String[] args) {
 		DealershipDBService dbsrv = new DealershipDBService();
-		Car testCar = new Car("Paddy","Wagon","green", 2010,10000d);
-		Car testCar2 = new Car("Paddy","Wagon2","black", 1999,9000d);
-		Car testCar3 = new Car("Parick","Wagon3","silver", 2012,12000d);
-		Car testCar4 = new Car("Paddy","Wagon4","orange", 2011,14000d);
-		Customer testCust = new Customer("testman","testpass","Test","Man");
-		Dealership.userMap.put(testCust.getUserName(), testCust);
-		testCar2.setOwner(testCust); //No users, means no fk, means no entry
-		Dealership.carMap.put(testCar.getId(), testCar);
-		Dealership.carMap.put(testCar2.getId(), testCar2);
-		Dealership.carMap.put(testCar3.getId(), testCar3);
-		Dealership.carMap.put(testCar4.getId(), testCar4);
-		testCar4.setOwner(testCust);
+		/*
+		 * DealershipDBService dbsrv = new DealershipDBService(); 
+		 * Car testCar = new
+		 * Car("Paddy","Wagon","green", 2010,10000d); Car testCar2 = new
+		 * Car("Paddy","Wagon2","black", 1999,9000d); Car testCar3 = new
+		 * Car("Parick","Wagon3","silver", 2012,12000d); Car testCar4 = new
+		 * Car("Paddy","Wagon4","orange", 2011,14000d); Customer testCust = new
+		 * Customer("testman","testpass","Test","Man");
+		 * 
+		 * Dealership.userMap.put(testCust.getUserID(), testCust);
+		 * testCar2.setOwner(testCust); //No users, means no fk, means no entry
+		 * Dealership.carMap.put(testCar.getId(), testCar);
+		 * Dealership.carMap.put(testCar2.getId(), testCar2);
+		 * Dealership.carMap.put(testCar3.getId(), testCar3);
+		 * Dealership.carMap.put(testCar4.getId(), testCar4);
+		 * testCar4.setOwner(testCust); Offer testOffer = new Offer(testCar, 15000,
+		 * testCust, 24, 2.5d); Dealership.offerMap.put(new Integer(testOffer.getId()),
+		 * testOffer);
+		 * 
+		 * try { dbsrv.pushUserMap(); dbsrv.pushCarMap(); dbsrv.pushOfferMap(); } catch
+		 * (SQLException e) { // TODO Auto-generated catch block e.printStackTrace(); }
+		 * 
+		 * testOffer.setPaymentsRemaining(testOffer.getPaymentsRemaining()-1); try {
+		 * dbsrv.updateOfferPayments(testOffer); } catch (SQLException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 * System.out.println(testOffer.getNumberOfPayments());
+		 * System.out.println("Done with main()");
+		 */
 		
 		try {
-			dbsrv.pushUserMap();
-			dbsrv.pushCarMap();
+			Dealership.userMap = dbsrv.grabUserMap();
+			Dealership.carMap = dbsrv.grabCarMap();
+			Dealership.offerMap = dbsrv.grabOfferMap();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Done with main()");
+		for(Offer o: Dealership.offerMap.values()) {
+			System.out.println(o.toString());
+		}
+		System.out.println("Done printing offers");
+		for(Car c: Dealership.carMap.values()) {
+			if(c.getOwner() != null) {
+				System.out.println(c.getId()+" "+c.getMake()+" "+c.getModel()+" Ownedby: "+c.getOwner().getUserName());
+			} else {
+				System.out.println(c.getId()+" "+c.getMake()+" "+c.getModel()+" Ownedby: DEALERSHIP");
+			}
+		}
 	}
 	
 	@Override
@@ -99,6 +126,10 @@ public class DealershipDBService implements DealershipDao {
 			c = new Car(rS.getString(2), rS.getString(3), rS.getString(4), rS.getInt(5), rS.getDouble(6));
 			c.setId(rS.getInt(1)); //sets ID to the one stored in the DB manually,
 			Car.forceCounterDown(); //and prevents our id generator logic in Car.java from misbehaving
+			if(rS.getInt(7) == -1) {
+				c.setOwner(null);
+			}
+			c.setOwner(Dealership.userMap.get(new Integer (rS.getInt(7))));
 			cMap.put(new Integer(c.getId()), c);
 		}
 		
@@ -110,10 +141,10 @@ public class DealershipDBService implements DealershipDao {
 		
 		Map<Integer, Users> diffCust = grabUserMap();
 		for(Users u : diffCust.values()) {
-			System.out.println("diffCust "+u.getUserName()+" "+u.getUserID());
+			//System.out.println("diffCust "+u.getUserName()+" "+u.getUserID());
 		}
 		for (Users u : Dealership.userMap.values()) {
-			System.out.println("allDealerCust: "+u.getUserName()+" "+u.getUserID());
+			//System.out.println("allDealerCust: "+u.getUserName()+" "+u.getUserID());
 		    if(!diffCust.containsValue(u)) {
 		    	insertUser(u);
 		    } 
@@ -140,7 +171,7 @@ public class DealershipDBService implements DealershipDao {
 
 	@Override
 	public HashMap<Integer, Users> grabUserMap() throws SQLException {
-		HashMap<Integer, Users> cMap = new HashMap<Integer, Users>();
+		HashMap<Integer, Users> uMap = new HashMap<Integer, Users>();
 		Connection conn = cF.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet rS = stmt.executeQuery("SELECT * FROM DEALERSHIP_USER");
@@ -152,28 +183,76 @@ public class DealershipDBService implements DealershipDao {
 				c = new Customer(rS.getString(4), rS.getString(5), rS.getString(2), rS.getString(3));
 				c.setId(rS.getInt(1)); //sets ID to the one stored in the DB manually,
 				Users.forceCounterDown(); //and prevents our id generator logic in Car.java from misbehaving
-				cMap.put(new Integer(c.getUserID()), c);
+				uMap.put(new Integer(c.getUserID()), c);
 			} else if (rS.getInt(6) == 1){
 				e = new Employee(rS.getString(4), rS.getString(5), rS.getString(2), rS.getString(3));
 				e.setId(rS.getInt(1));
 				Users.forceCounterDown(); //and prevents our id generator logic in Car.java from misbehaving
-				cMap.put(new Integer(e.getUserID()), e);
+				uMap.put(new Integer(e.getUserID()), e);
 			}
 		}
 		
-		return cMap;
+		return uMap;
 	}
 
 	@Override
 	public void pushOfferMap() throws SQLException {
 		
-		
+		Map<Integer, Offer> diffOffer = grabOfferMap();
+		for(Offer o : diffOffer.values()) {
+			System.out.println("diffoffer "+o.getId()+" "+o.getStatus());
+		}
+		for (Offer o : Dealership.offerMap.values()) {
+			System.out.println("allDealerOffers: "+o.getId()+" "+o.getStatus());
+		    if(!diffOffer.containsValue(o)) {
+		    	insertOffer(o);
+		    } 
+		}
+	}
+	
+	private void insertOffer(Offer o) throws SQLException {
+		Connection conn = cF.getConnection();
+		String sql = "INSERT INTO OFFER VALUES ("+o.getId()+","+o.getStatus()+","+o.getCar().getId()+","+
+				o.getOfferAmmount()+","+o.getUserThatMadeOffer().getUserID()+","+o.getPaymentsRemaining()+","+o.getInterestRate()+")";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.executeQuery();
+	}
+	
+	//Where Offer status 0=pending, 1=accepted, 2=rejected
+	public void makePaymentOnOffer(Offer o, int status) throws SQLException {
+		int customerID = o.getUserThatMadeOffer().getUserID();
+		Connection conn = cF.getConnection();
+		String sql = "UPDATE OFFER SET OWNER_CUSTOMER = "+customerID+"WHERE OFFER_ID = "+o.getId();
+		CallableStatement call = conn.prepareCall(sql);
+		call.execute();
+	}
+	
+	//call this to update DB with new payments left
+	public void updateOfferPayments(Offer o) throws SQLException{
+		Connection conn = cF.getConnection();
+		String sql = "UPDATE OFFER SET PAYMENTS_LEFT = "+o.getPaymentsRemaining()+"WHERE OFFER_ID = "+o.getId();
+		CallableStatement call = conn.prepareCall(sql);
+		call.execute();
 	}
 
 	@Override
 	public HashMap<Integer, Offer> grabOfferMap() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<Integer, Offer> oMap = new HashMap<Integer, Offer>();
+		Connection conn = cF.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet rS = stmt.executeQuery("SELECT * FROM OFFER");
+		Offer o = null;
+		//TODO add if statement depending on rS.getInt(6)
+		while(rS.next()) {
+			Customer cThatMadeOffer = (Customer) Dealership.userMap.get(new Integer(rS.getInt(5)));
+			Car attached = Dealership.carMap.get(new Integer(rS.getInt(3)));
+			
+			o = new Offer(attached, rS.getInt(4),cThatMadeOffer,rS.getInt(6),rS.getInt(7));
+			o.setId(rS.getInt(1)); //sets ID to the one stored in the DB manually,
+			Offer.forceCounterDown(); //and prevents our id generator logic in Offer.java from misbehaving
+			oMap.put(new Integer(o.getId()), o);
+		}
+		return oMap;
 	}
 
 }
