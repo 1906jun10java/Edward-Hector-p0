@@ -17,11 +17,11 @@ public class MainMenu {
 
 	public static void runMainMenu() {
 		scanner=new Scanner(System.in);
-		/*System.out.println("Welcome\nSelect on of the options");
+		System.out.println("Welcome\nSelect on of the options");
 		System.out.println("1.Log In \n" + "2.Register \n" + "3.Close Program");
 		mainMenuCaseVar = scanner.nextInt();
 		
-*/		
+	
 		
 		Customer genericCustomer=new Customer();
 		Dealership.userMap.put(null, genericCustomer);
@@ -48,8 +48,6 @@ public class MainMenu {
 		}
 	}
 
-	public static void main(String[] args) {
-		runMainMenu();
-	}
+	
 
 }
