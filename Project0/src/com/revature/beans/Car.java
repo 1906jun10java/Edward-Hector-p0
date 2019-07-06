@@ -66,6 +66,7 @@ public class Car {
 	public void setMsrp(double msrp) {
 		this.msrp = msrp;
 	}
+
 	
 	public Users getOwner() {
 		return owner;
@@ -144,7 +145,5 @@ public class Car {
 	}
 	
 	
-	
-	
-
 }
+	

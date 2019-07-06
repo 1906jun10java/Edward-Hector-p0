@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Dealership {
+	public static Employee systemEmp = new Employee();
 	
+
 
 	public static Map<Integer,Car> carMap;
 	
@@ -14,6 +16,4 @@ public class Dealership {
 	
 	
 	
-	
-
 }

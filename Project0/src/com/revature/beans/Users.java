@@ -14,7 +14,9 @@ public abstract class Users {
 	
 	public Users() {
 		super();
-		// TODO Auto-generated constructor stub
+		//empty constructor used to init Dealership Emp with reserved ID
+		this.userName = "Dealership";
+		this.userID = -1;
 	}
 	public Users(String userName, String password, String firstName, String lastName,String userType) {
 		super();
@@ -116,5 +118,5 @@ public abstract class Users {
 		return true;
 	}
 	
-
+	
 }
