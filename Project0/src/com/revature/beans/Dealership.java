@@ -1,7 +1,6 @@
 package com.revature.beans;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.revature.datalayer.DealershipDBService;

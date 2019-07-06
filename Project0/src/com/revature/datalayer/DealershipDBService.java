@@ -49,16 +49,11 @@ public class DealershipDBService implements DealershipDao {
 		Map<Integer,Car> diffCars = grabCarMap();
 		for(Car c : diffCars.values()) {
 			System.out.println(c.getId()+" "+c.getMake());
-			for(Car k : Dealership.carMap.values()) {
-				if(k.equals(c)){
-					System.out.println("cars are equal");
-				}
-			}
 		}
 		for (Car c : Dealership.carMap.values()) {
 			System.out.println("allDealerCars: "+c.getId()+" "+c.getMake());
 		    if(diffCars.containsValue(c)) {
-		    	if(c.getOwner().getUserID() != -1) {
+		    	if(c.getOwner() != null) {
 		    		updateCar(c, c.getOwner());
 		    	}
 		    } else {
@@ -79,6 +74,7 @@ public class DealershipDBService implements DealershipDao {
 		System.out.println("============================"+"\n"+sql+"=========================");
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
+		ps.close();
 		conn.close();
 	}
 
@@ -115,6 +111,7 @@ public class DealershipDBService implements DealershipDao {
 			c.setOwner(Dealership.userMap.get(new Integer (rS.getInt(7))));
 			cMap.put(new Integer(c.getId()), c);
 		}
+		rS.close();
 		conn.close();
 		return cMap;
 	}
@@ -150,6 +147,7 @@ public class DealershipDBService implements DealershipDao {
 		//System.out.println("CUSTOMER: \n"+ sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
+		ps.close();
 		conn.close();
 		
 	}
@@ -175,6 +173,7 @@ public class DealershipDBService implements DealershipDao {
 				uMap.put(rS.getString(4), e);
 			}
 		}
+		rS.close();
 		conn.close();
 		return (HashMap<String, Users>) uMap;
 	}
@@ -200,6 +199,7 @@ public class DealershipDBService implements DealershipDao {
 				o.getOfferAmmount()+","+o.getUserThatMadeOffer().getUserID()+","+o.getPaymentsRemaining()+","+o.getInterestRate()+")";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
+		ps.close();
 		conn.close();
 	}
 	
@@ -239,7 +239,9 @@ public class DealershipDBService implements DealershipDao {
 			Offer.forceCounterDown(); //and prevents our id generator logic in Offer.java from misbehaving
 			oMap.put(new Integer(o.getId()), o);
 		}
+		rS.close();
 		conn.close();
+		
 		return oMap;
 	}
 	
@@ -249,9 +251,35 @@ public class DealershipDBService implements DealershipDao {
 		String sql = "SELECT MAX(CAR_VIM) FROM CAR";
 		Statement call = conn.createStatement();
 		ResultSet rS = call.executeQuery(sql);
-		while (rS.next()) {
-			maxCarId = rS.getInt(1);
-		}
+		rS.next();
+		maxCarId = rS.getInt(1);
+		rS.close();
+		conn.close();
+		return maxCarId;
+	}
+	
+	public int getMaxUserID() throws SQLException {
+		int maxCarId = 0;
+		Connection conn = cF.getConnection();
+		String sql = "SELECT MAX(USER_ID) FROM DEALERSHIP_USER";
+		Statement call = conn.createStatement();
+		ResultSet rS = call.executeQuery(sql);
+		rS.next();
+		maxCarId = rS.getInt(1);
+		rS.close();
+		conn.close();
+		return maxCarId;
+	}
+	
+	public int getMaxOfferID() throws SQLException {
+		int maxCarId = 0;
+		Connection conn = cF.getConnection();
+		String sql = "SELECT MAX(OFFER_ID) FROM OFFER";
+		Statement call = conn.createStatement();
+		ResultSet rS = call.executeQuery(sql);
+		rS.next();
+		maxCarId = rS.getInt(1);
+		rS.close();
 		conn.close();
 		return maxCarId;
 	}
