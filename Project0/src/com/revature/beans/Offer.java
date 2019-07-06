@@ -4,7 +4,7 @@ public class Offer {
 	
 	private Car car;
 	private double offerAmmount;
-	private String status;
+	private String status; 
 	private int offerNumber;
 	private static int Number=1;
 	private Customer userThatMadeOffer;
@@ -29,6 +29,7 @@ public class Offer {
 		this.status = "pending";
 		this.userThatMadeOffer=user;
 		this.numberOfPayments=numberOfPayments;
+		this.paymentsRemaining = numberOfPayments;
 		this.interestRate=interestRate;
 		this.offerNumber=Number;
 		Number++;
@@ -153,10 +154,24 @@ public class Offer {
 	}
 
 
+	public void setNumberOfPayments(int numberOfPayments) {
+		this.numberOfPayments = numberOfPayments;
+	}
 
 
 
-	
-	
+
+	public int getId() {
+		return this.offerNumber;
+	}
+	//Needed to prevent false increments when grabbing from DB
+	public void setId(int int1) {
+		this.offerNumber = int1;
+	}
+	//prevents ID from incrementing when grabbing cars from DB
+	public static void forceCounterDown() {
+		Number--;
+	}
+
 
 }
