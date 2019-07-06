@@ -12,12 +12,10 @@ public class RegisterMenu {
 		System.out.println("What do you want your username to be?");
 		String username=MainMenu.scanner.next();
 		//add check for username, can have no repeting usernames
-		while(Dealership.customerMap.containsKey(username)==true) {
+		while(Dealership.userMap.containsKey(username)==true) {
 			System.out.println("This username is already taken. Input a new username");
 			 username=MainMenu.scanner.next();
 		}
-		
-		
 		
 		System.out.println("What do you want your password to be?");
 		String password=MainMenu.scanner.next();
@@ -32,7 +30,7 @@ public class RegisterMenu {
 		
 		
 		Customer newCustomer=new Customer(username,password,firstName,lastName);
-		Dealership.customerMap.put(username, newCustomer);
+		Dealership.userMap.put(username, newCustomer);
 		System.out.println("Thank you for registering");
 		
 		MainMenu.mainMenuCaseVar=0;

@@ -24,7 +24,7 @@ public class MainMenu {
 */		
 		
 		Customer genericCustomer=new Customer();
-		Dealership.customerMap.put(null, genericCustomer);
+		Dealership.userMap.put(null, genericCustomer);
 		while (true) {
 			
 			System.out.println("Welcome\nSelect on of the options");
