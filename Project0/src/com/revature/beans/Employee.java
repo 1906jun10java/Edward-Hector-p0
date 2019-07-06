@@ -21,7 +21,6 @@ public class Employee extends Users {
 	public EmployeeFunctions getMyFunctions() {
 		return myFunctions;
 	}
-	
-	
+
 
 }

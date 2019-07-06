@@ -9,6 +9,8 @@ import com.revature.logic.CustomerFunctions;
 
 public class Customer extends Users {
 	
+	
+
 	private List<Car> carList;
 	private Map<Integer,Offer> myPendingOffers;
 	private CustomerFunctions myFunctions;
@@ -36,10 +38,6 @@ public class Customer extends Users {
 	public CustomerFunctions getMyFunctions() {
 		return myFunctions;
 	}
-
-	
-
-
 	
 	
 	

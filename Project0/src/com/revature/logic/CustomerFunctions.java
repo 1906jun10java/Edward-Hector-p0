@@ -27,7 +27,7 @@ public class CustomerFunctions extends UserFunctions {
 	public void makeOffer(Car car, double offerAmmount,int numberOfPayments,double interestRate) {
 		Offer newOffer=new Offer(car,offerAmmount,thisCustomer,numberOfPayments,interestRate);
 		thisCustomer.getMyPendingOffers().put(newOffer.getOfferNumber(),newOffer );
-		Dealership.pendingOffers.put(newOffer.getOfferNumber(), newOffer);
+		Dealership.offers.put(newOffer.getOfferNumber(), newOffer);
 		
 	}
 	
