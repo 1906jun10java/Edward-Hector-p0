@@ -12,6 +12,7 @@ public class EmployeeMenu {
 		System.out.println("Hello " + LogInMenu.currentEmployee.getUserName());
 
 		while (true) {
+			
 			System.out.println("1.Add Car to lot \n2.See pending offers \n 3.Reject offer"
 					+ "\n 4.Accept Offer \n 5.See payments remaining on a car \n 6.See accepted offers"
 					+ " \n7. Log Out");
@@ -43,6 +44,7 @@ public class EmployeeMenu {
 				LogInMenu.currentEmployee.getMyFunctions().addCar(make, model, color, year, msrp);
 
 				userCaseVar = 0;
+				
 				// Get pending offers
 				
 				
@@ -50,7 +52,7 @@ public class EmployeeMenu {
 			} else if (userCaseVar == 2) {
 
 				for (Offer o : Dealership.offers.values()) {
-					if (o.getStatus().equals("pending")) {
+					if (o.getStatus() == 0) {
 						System.out.println(o);
 					}
 				}
@@ -130,7 +132,7 @@ public class EmployeeMenu {
 				//see accepted offers
 			}else if (userCaseVar == 6) {
 				for (Offer o : Dealership.offers.values()) {
-					if (o.getStatus().equals("accepted")) {
+					if (o.getStatus() == 1) {
 						System.out.println(o);
 					}
 				}

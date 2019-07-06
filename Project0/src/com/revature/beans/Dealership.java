@@ -1,7 +1,10 @@
 package com.revature.beans;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.revature.datalayer.DealershipDBService;
 
 public class Dealership {
 	public static Employee system = new Employee();
@@ -10,14 +13,20 @@ public class Dealership {
 
 	public static Map<Integer,Car> carMap;
 	
-	public static Map<String,Users> userMap;
+	public static Map<String, Users> userMap;
 	
 	public static Map<Integer,Offer> offers;
 	
-<<<<<<< HEAD
-	
-=======
-	public static Map<Integer,Users> userMap = new HashMap<>();
->>>>>>> edward-work
+	public static void initMaps() {
+		DealershipDBService dbsrv = new DealershipDBService();
+		try {
+			userMap = dbsrv.grabUserMap();
+			carMap = dbsrv.grabCarMap();
+			offers = dbsrv.grabOfferMap();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }

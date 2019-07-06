@@ -143,7 +143,20 @@ public class Car {
 			return false;
 		return true;
 	}
+
+	public void setId(int int1) {
+		this.id = int1+1;
+		
+	}
+
+	public static void forceCounterDown() {
+		ID--;
+	}
 	
+	public static void setIDSeed(int seed) {
+		System.out.println("setIDSEE()");
+		ID = seed+1;
+	}
 	
 }
 	

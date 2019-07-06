@@ -14,7 +14,7 @@ public interface DealershipDao {
 	
 	//May be changed to UserMap
 	public void pushUserMap() throws SQLException;
-	public HashMap<Integer, Users> grabUserMap() throws SQLException;
+	public HashMap<String, Users> grabUserMap() throws SQLException;
 	
 	public void pushOfferMap() throws SQLException;
 	public HashMap<Integer, Offer> grabOfferMap() throws SQLException;

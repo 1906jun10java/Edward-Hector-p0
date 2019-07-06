@@ -1,5 +1,6 @@
 package com.revature.logic;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -11,6 +12,7 @@ import com.revature.beans.Customer;
 import com.revature.beans.Dealership;
 import com.revature.beans.Offer;
 import com.revature.beans.Users;
+import com.revature.datalayer.DealershipDBService;
 
 public class EmployeeFunctions extends UserFunctions {
 
@@ -24,6 +26,14 @@ public class EmployeeFunctions extends UserFunctions {
 		Car newCar = new Car(make, model, color, makeYear, msrp);
 
 		Dealership.carMap.put(newCar.getId(), newCar);
+		
+		DealershipDBService dbsrv = new DealershipDBService();
+		try {
+			dbsrv.pushCarMap();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/*
 	 * public int paymentsMadeOnOffer(int offerID) { Offer
@@ -45,9 +55,9 @@ public class EmployeeFunctions extends UserFunctions {
 
 		Offer offer = Dealership.offers.get(offerID);// pending offers
 
-		if (offer.getStatus() == "pending") {
+		if (offer.getStatus() == 0) {
 
-			offer.setStatus("accepted");
+			offer.setStatus(1);
 			offer.setPaymentsRemaining(offer.getNumberOfPayments());
 			// Dealership.acceptedOffers.put(offerID, offer);// accepted offers
 
@@ -86,8 +96,8 @@ public class EmployeeFunctions extends UserFunctions {
 			 */
 
 			for (Offer o : Dealership.offers.values()) {
-				if (o.getStatus().equals("pending") && o.getCar().equals(car)) {
-					o.setStatus("rejected");
+				if (o.getStatus() == 0 && o.getCar().equals(car)) {
+					o.setStatus(2);
 					o.getUserThatMadeOffer().getMyPendingOffers().remove(o.getOfferNumber());
 				}
 			}
@@ -100,8 +110,8 @@ public class EmployeeFunctions extends UserFunctions {
 
 	public void rejectOffer(int offerID) {
 		Offer offer = Dealership.offers.get(offerID);// pending offers
-		if (offer.getStatus().equals("pending")) {
-			offer.setStatus("rejected");
+		if (offer.getStatus() == 0) {
+			offer.setStatus(2);
 
 			Customer user = offer.getUserThatMadeOffer();
 

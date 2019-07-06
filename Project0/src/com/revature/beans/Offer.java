@@ -76,13 +76,6 @@ public class Offer {
 	public int getStatus() {
 		return status;
 	}
-	
-
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 
 	public void setPaymentsRemaining(int paymentsRemaining) {
 		this.paymentsRemaining = paymentsRemaining;
@@ -96,73 +89,9 @@ public class Offer {
 				+ ", interestRate=" + interestRate + ", paymentsRemaining=" + paymentsRemaining + "]";
 	}
 
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((car == null) ? 0 : car.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(interestRate);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + numberOfPayments;
-		temp = Double.doubleToLongBits(offerAmmount);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + offerNumber;
-		result = prime * result + paymentsRemaining;
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + ((userThatMadeOffer == null) ? 0 : userThatMadeOffer.hashCode());
-		return result;
-	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Offer other = (Offer) obj;
-		if (car == null) {
-			if (other.car != null)
-				return false;
-		} else if (!car.equals(other.car))
-			return false;
-		if (Double.doubleToLongBits(interestRate) != Double.doubleToLongBits(other.interestRate))
-			return false;
-		if (numberOfPayments != other.numberOfPayments)
-			return false;
-		if (Double.doubleToLongBits(offerAmmount) != Double.doubleToLongBits(other.offerAmmount))
-			return false;
-		if (offerNumber != other.offerNumber)
-			return false;
-		if (paymentsRemaining != other.paymentsRemaining)
-			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
-			return false;
-		if (userThatMadeOffer == null) {
-			if (other.userThatMadeOffer != null)
-				return false;
-		} else if (!userThatMadeOffer.equals(other.userThatMadeOffer))
-			return false;
-		return true;
-	}
-
-
 	public void setNumberOfPayments(int numberOfPayments) {
 		this.numberOfPayments = numberOfPayments;
 	}
-
-
-	public void setPaymentsRemaining(int paymentsRemaining) {
-		this.paymentsRemaining = paymentsRemaining;
-	}
-
 
 	public int getId() {
 		return this.offerNumber;
@@ -174,14 +103,6 @@ public class Offer {
 	//prevents ID from incrementing when grabbing cars from DB
 	public static void forceCounterDown() {
 		Number--;
-	}
-
-
-	@Override
-	public String toString() {
-		return "Offer [car=" + car.getId() + ", offerAmmount=" + offerAmmount + ", status=" + status + ", offerNumber="
-				+ offerNumber + ", userThatMadeOffer=" + userThatMadeOffer.getUserName() + ", numberOfPayments=" + numberOfPayments
-				+ ", interestRate=" + interestRate + ", paymentsRemaining=" + paymentsRemaining + "]";
 	}
 
 
@@ -226,6 +147,11 @@ public class Offer {
 		} else if (!userThatMadeOffer.equals(other.userThatMadeOffer))
 			return false;
 		return true;
+	}
+
+
+	public void setStatus(int i) {
+		this.status = i;
 	}
 
 

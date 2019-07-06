@@ -67,6 +67,7 @@ public abstract class Users {
 		return "Users [userName=" + userName + ", password=" + password + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", userID=" + userID + ", userType=" + userType + "]";
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,5 +119,13 @@ public abstract class Users {
 		return true;
 	}
 	
+	public void setId(int int1) {
+		this.userID = int1;
+		
+	}
+
+	public static void forceCounterDown() {
+		UID--;
+	}
 	
 }
