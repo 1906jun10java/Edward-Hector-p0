@@ -111,7 +111,7 @@ public class CustomerMenu {
 				}
 				int carID = MainMenu.scanner.nextInt();
 				for (Offer o : Dealership.offers.values()) {
-					if (o.getCar().getId() == carID && o.getStatus().equals("accepted")) {
+					if (o.getCar().getId() == carID && o.getStatus() ==1) {
 						if (o.getUserThatMadeOffer().equals(LogInMenu.currentCustomer)
 								&& o.getPaymentsRemaining() != 0) {
 							System.out.println("You are about to make a payment of " + AnnuityCalc.annuityCalc(o)

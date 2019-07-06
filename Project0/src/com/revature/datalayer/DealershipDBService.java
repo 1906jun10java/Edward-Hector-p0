@@ -49,6 +49,11 @@ public class DealershipDBService implements DealershipDao {
 		Map<Integer,Car> diffCars = grabCarMap();
 		for(Car c : diffCars.values()) {
 			System.out.println(c.getId()+" "+c.getMake());
+			for(Car k : Dealership.carMap.values()) {
+				if(k.equals(c)){
+					System.out.println("cars are equal");
+				}
+			}
 		}
 		for (Car c : Dealership.carMap.values()) {
 			System.out.println("allDealerCars: "+c.getId()+" "+c.getMake());
@@ -69,12 +74,14 @@ public class DealershipDBService implements DealershipDao {
 	//when inserting a car into the DB, it should (as per getOwnerID()) add it with an owner of Dealership
 	private void insertCar(Car c)  throws SQLException {
 		Connection conn = cF.getConnection();
-		String sql = "INSERT INTO CAR VALUES ("+setCarID()+",'"+c.getMake()+"','"+c.getModel()+"','"+
+		String sql = "INSERT INTO CAR VALUES ("+c.getId()+",'"+c.getMake()+"','"+c.getModel()+"','"+
 		c.getColor()+"',"+c.getMakeYear()+","+c.getMsrp()+","+c.getOwner()+")";
+		System.out.println("============================"+"\n"+sql+"=========================");
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
+		conn.close();
 	}
-	
+
 	//to be called updating a car, id is the ID of the Customer which owns that car
 	private void updateCar(Car c, Users u) throws SQLException {
 		//System.out.println("in update car");
@@ -82,6 +89,7 @@ public class DealershipDBService implements DealershipDao {
 		String sql = "UPDATE CAR SET OWNER_ID = "+u.getUserID()+"WHERE CAR_VIM = "+c.getId();
 		CallableStatement call = conn.prepareCall(sql);
 		call.execute();
+		conn.close();
 	}
 
 	@Override
@@ -107,7 +115,7 @@ public class DealershipDBService implements DealershipDao {
 			c.setOwner(Dealership.userMap.get(new Integer (rS.getInt(7))));
 			cMap.put(new Integer(c.getId()), c);
 		}
-		
+		conn.close();
 		return cMap;
 	}
 
@@ -132,6 +140,7 @@ public class DealershipDBService implements DealershipDao {
 		String sql = "UPDATE CAR SET OWNER_ID = "+newOwner.getUserID()+" WHERE CAR_VIM = "+car.getId();
 		CallableStatement call = conn.prepareCall(sql);
 		call.execute();
+		conn.close();
 	}
 
 	private void insertUser(Users u) throws SQLException {
@@ -141,6 +150,7 @@ public class DealershipDBService implements DealershipDao {
 		//System.out.println("CUSTOMER: \n"+ sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
+		conn.close();
 		
 	}
 
@@ -165,7 +175,7 @@ public class DealershipDBService implements DealershipDao {
 				uMap.put(rS.getString(4), e);
 			}
 		}
-		
+		conn.close();
 		return (HashMap<String, Users>) uMap;
 	}
 
@@ -190,6 +200,7 @@ public class DealershipDBService implements DealershipDao {
 				o.getOfferAmmount()+","+o.getUserThatMadeOffer().getUserID()+","+o.getPaymentsRemaining()+","+o.getInterestRate()+")";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
+		conn.close();
 	}
 	
 	//Where Offer status 0=pending, 1=accepted, 2=rejected
@@ -199,6 +210,7 @@ public class DealershipDBService implements DealershipDao {
 		String sql = "UPDATE OFFER SET OWNER_CUSTOMER = "+customerID+"WHERE OFFER_ID = "+o.getId();
 		CallableStatement call = conn.prepareCall(sql);
 		call.execute();
+		conn.close();
 	}
 	
 	//call this to update DB with new payments left
@@ -207,6 +219,7 @@ public class DealershipDBService implements DealershipDao {
 		String sql = "UPDATE OFFER SET PAYMENTS_LEFT = "+o.getPaymentsRemaining()+"WHERE OFFER_ID = "+o.getId();
 		CallableStatement call = conn.prepareCall(sql);
 		call.execute();
+		conn.close();
 	}
 
 	@Override
@@ -226,18 +239,20 @@ public class DealershipDBService implements DealershipDao {
 			Offer.forceCounterDown(); //and prevents our id generator logic in Offer.java from misbehaving
 			oMap.put(new Integer(o.getId()), o);
 		}
+		conn.close();
 		return oMap;
 	}
 	
-	public int setCarID() throws SQLException {
-		int maxCarId;
+	public int getMaxCarID() throws SQLException {
+		int maxCarId = 0;
 		Connection conn = cF.getConnection();
 		String sql = "SELECT MAX(CAR_VIM) FROM CAR";
-		CallableStatement call = conn.prepareCall(sql);
-		ResultSet rS = call.executeQuery();
+		Statement call = conn.createStatement();
+		ResultSet rS = call.executeQuery(sql);
 		while (rS.next()) {
 			maxCarId = rS.getInt(1);
 		}
+		conn.close();
 		return maxCarId;
 	}
 

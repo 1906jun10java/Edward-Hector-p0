@@ -24,6 +24,7 @@ public class ConnFactory {
 	}
 	
 	public Connection getConnection() {
+		System.out.println("in getConnection");
 		Connection conn = null;
 		//it is the DriverManager that gives us a connection DriverManager.getConnection(url, username, password)
 		Properties props = new Properties();

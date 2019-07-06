@@ -153,10 +153,5 @@ public class Car {
 		ID--;
 	}
 	
-	public static void setIDSeed(int seed) {
-		System.out.println("setIDSEE()");
-		ID = seed+1;
-	}
-	
 }
 	

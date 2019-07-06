@@ -25,14 +25,16 @@ public class EmployeeFunctions extends UserFunctions {
 	public void addCar(String make, String model, String color, int makeYear, double msrp) {
 		Car newCar = new Car(make, model, color, makeYear, msrp);
 
-		Dealership.carMap.put(newCar.getId(), newCar);
 		
 		DealershipDBService dbsrv = new DealershipDBService();
 		try {
+			Dealership.carMap.put(dbsrv.getMaxCarID(), newCar);
+			newCar.setId(dbsrv.getMaxCarID());
+			System.out.println("========================"+newCar.toString()+"===============================");
 			dbsrv.pushCarMap();
-		} catch (SQLException e) {
+		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
 	}
 	/*
