@@ -69,8 +69,7 @@ public class DealershipDBService implements DealershipDao {
 	//when inserting a car into the DB, it should (as per getOwnerID()) add it with an owner of Dealership
 	private void insertCar(Car c)  throws SQLException {
 		Connection conn = cF.getConnection();
-		System.out.println(c.getId());
-		String sql = "INSERT INTO CAR VALUES ("+c.getId()+",'"+c.getMake()+"','"+c.getModel()+"','"+
+		String sql = "INSERT INTO CAR VALUES ("+setCarID()+",'"+c.getMake()+"','"+c.getModel()+"','"+
 		c.getColor()+"',"+c.getMakeYear()+","+c.getMsrp()+","+c.getOwner()+")";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
@@ -230,12 +229,16 @@ public class DealershipDBService implements DealershipDao {
 		return oMap;
 	}
 	
-	public void setCarIDSeed() throws SQLException {
+	public int setCarID() throws SQLException {
+		int maxCarId;
 		Connection conn = cF.getConnection();
-		String sql = "SELECT MAX(CAR_VIM) FROM CAR;";
+		String sql = "SELECT MAX(CAR_VIM) FROM CAR";
 		CallableStatement call = conn.prepareCall(sql);
 		ResultSet rS = call.executeQuery();
-		Car.setIDSeed(rS.getInt(1));
+		while (rS.next()) {
+			maxCarId = rS.getInt(1);
+		}
+		return maxCarId;
 	}
 
 }
