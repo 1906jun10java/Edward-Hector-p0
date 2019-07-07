@@ -24,7 +24,32 @@ public class ConnFactory {
 	}
 	
 	public Connection getConnection() {
-		System.out.println("in getConnection");
+		//System.out.println("in getConnection");
+		Connection conn = null;
+		//it is the DriverManager that gives us a connection DriverManager.getConnection(url, username, password)
+		Properties props = new Properties();
+		try {
+			props.load(new FileReader("database.properties"));
+			//We can read in a file, in this case we made a databse.properties file and are passing it in
+			//via a Properties object (which uses a file reader to read the actual file).
+			
+			Class.forName(props.getProperty("driver"));
+			conn = DriverManager.getConnection(props.getProperty("url"), 
+					props.getProperty("usr"), props.getProperty("password"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return conn;
+	}
+	
+	public static Connection getLoggerConnection() {
+		//System.out.println("in getConnection");
 		Connection conn = null;
 		//it is the DriverManager that gives us a connection DriverManager.getConnection(url, username, password)
 		Properties props = new Properties();
