@@ -9,6 +9,9 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+
 import com.revature.beans.Car;
 import com.revature.beans.Customer;
 import com.revature.beans.Dealership;
@@ -18,10 +21,13 @@ import com.revature.beans.Users;
 
 public class DealershipDBService implements DealershipDao {
 	public static ConnFactory cF = ConnFactory.getInstance();
+	private static Logger logger = (Logger) LogManager.getLogger();
 
 	//might just make the whole thing static
 	public static void main(String[] args) {
-
+		logger.trace("Entering application.");
+		System.out.println("Test");
+		logger.fatal("Exiting application.");
 	}
 	
 	@Override
@@ -53,7 +59,7 @@ public class DealershipDBService implements DealershipDao {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO CAR VALUES ("+c.getId()+",'"+c.getMake()+"','"+c.getModel()+"','"+
 		c.getColor()+"',"+c.getMakeYear()+","+c.getMsrp()+","+c.getOwner()+")";
-		//System.out.println("=============="+"\n"+sql+"==================");
+		logger.trace("DBServ-insertCar() : "+sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
 		ps.close();
@@ -127,7 +133,7 @@ public class DealershipDBService implements DealershipDao {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO DEALERSHIP_USER VALUES ("+u.getUserID()+",'"+u.getFirstName()+"','"+u.getLastName()+"','"+
 		u.getUserName()+"','"+u.getPassword()+"',"+0+")";
-		//System.out.println("CUSTOMER: \n"+ sql);
+		logger.trace("DBServ-insertUser() : "+sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
 		ps.close();
@@ -182,6 +188,7 @@ public class DealershipDBService implements DealershipDao {
 		String sql = "INSERT INTO OFFER VALUES ("+o.getId()+","+o.getStatus()+","+o.getCar().getId()+","+
 				o.getOfferAmmount()+","+o.getUserThatMadeOffer().getUserID()+","+o.getPaymentsRemaining()+","+o.getInterestRate()+")";
 		PreparedStatement ps = conn.prepareStatement(sql);
+		logger.trace("DBServ-insertOffer() : "+sql);
 		ps.executeQuery();
 		ps.close();
 		conn.close();

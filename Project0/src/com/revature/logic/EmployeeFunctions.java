@@ -29,7 +29,6 @@ public class EmployeeFunctions extends UserFunctions {
 		try {
 			DealershipDBService dbsrv = new DealershipDBService();
 			newCar.setId(dbsrv.getMaxCarID()+1);
-			System.out.println("________"+newCar.getId()+" "+newCar.toString()+"___________EmpFunc");
 			Dealership.carMap.put(newCar.getId(), newCar);
 			dbsrv.pushCarMap();
 		} catch (SQLException e1) {
