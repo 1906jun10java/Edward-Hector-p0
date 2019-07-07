@@ -35,9 +35,6 @@ public class DealershipDBService implements DealershipDao {
 	//To be called to push the current carMap in the Dealership into the database
 	public void pushCarMap() throws SQLException {
 		Map<Integer,Car> diffCars = grabCarMap();
-		for(Car c : diffCars.values()) {
-			//System.out.println("DB fetched: "+c.getId()+" "+c.getMake());
-		}
 		for (Car c : Dealership.carMap.values()) {
 			//System.out.println("allDealerCars: "+c.getId()+" "+c.getMake());
 		    if(diffCars.containsKey(c.getId())) {
@@ -45,10 +42,20 @@ public class DealershipDBService implements DealershipDao {
 		    		updateCar(c, c.getOwner());
 		    	}
 		    } else {
-		    	//System.out.println("\nInserting Car: "+c.getId()+" "+c.getMake());
 		    	insertCar(c);
 		    }
 		}
+	}
+	
+	//set Dealership.carMap = grabCarMap() after this is called
+	public void removeCar(Car c) throws SQLException {
+		Connection conn = cF.getConnection();
+		String sql = "DELETE FROM CAR WHERE CAR_ID = "+c.getId();
+		logger.trace("DBServ-removeCar() : "+sql);
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.executeQuery();
+		ps.close();
+		conn.close();
 	}
 	
 	//when inserting a car into the DB, it should (as per getOwnerID()) add it with an owner of Dealership
@@ -56,7 +63,6 @@ public class DealershipDBService implements DealershipDao {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO CAR VALUES ("+c.getId()+",'"+c.getMake()+"','"+c.getModel()+"','"+
 		c.getColor()+"',"+c.getMakeYear()+","+c.getMsrp()+","+null+")";
-		System.out.println(sql);
 		logger.trace("DBServ-insertCar() : "+sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
