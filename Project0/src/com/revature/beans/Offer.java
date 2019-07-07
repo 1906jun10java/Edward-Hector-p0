@@ -31,8 +31,6 @@ public class Offer {
 		this.numberOfPayments=numberOfPayments;
 		this.paymentsRemaining = numberOfPayments;
 		this.interestRate=interestRate;
-		this.offerNumber=Number;
-		Number++;
 	}
 	
 	public int getPaymentsRemaining() {

@@ -21,26 +21,17 @@ public class DealershipDBService implements DealershipDao {
 
 	//might just make the whole thing static
 	public static void main(String[] args) {
-		/*
-		 * DealershipDBService dbsrv = new DealershipDBService();
-		 * 
-		 * try { Dealership.userMap = dbsrv.grabUserMap(); Dealership.carMap =
-		 * dbsrv.grabCarMap(); Dealership.offers = dbsrv.grabOfferMap(); } catch
-		 * (SQLException e) { // TODO Auto-generated catch block e.printStackTrace(); }
-		 * if (Dealership.offers != null) { for (Offer o : Dealership.offers.values()) {
-		 * o.setPaymentsRemaining(o.getPaymentsRemaining() - 1); try {
-		 * dbsrv.updateOfferPayments(o); } catch (SQLException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
-		 * System.out.println(o.toString()); } }
-		 * System.out.println("Done printing offers"); if (Dealership.carMap != null) {
-		 * for (Car c : Dealership.carMap.values()) { if (c.getOwner() != null) {
-		 * System.out.println(c.getId() + " " + c.getMake() + " " + c.getModel() +
-		 * " Ownedby: " + c.getOwner().getUserName()); } else {
-		 * System.out.println(c.getId() + " " + c.getMake() + " " + c.getModel() +
-		 * " Ownedby: DEALERSHIP"); } } } System.out.println("Done printing cars"); if
-		 * (Dealership.userMap != null) { for (Users u : Dealership.userMap.values()) {
-		 * System.out.println(u.getUserName() + " is " + u.getUserType()); } }
-		 */
+		DealershipDBService dbsrv = new DealershipDBService();
+		try {
+			Dealership.offers = dbsrv.grabOfferMap();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Done grabOfferMap");
+		for(Offer o : Dealership.offers.values()) {
+			System.out.println("Offer: "+o.getId()+" Car: "+o.getCar());
+		}
 	}
 	
 	@Override
@@ -48,7 +39,7 @@ public class DealershipDBService implements DealershipDao {
 	public void pushCarMap() throws SQLException {
 		Map<Integer,Car> diffCars = grabCarMap();
 		for(Car c : diffCars.values()) {
-			//System.out.println(c.getId()+" "+c.getMake());
+			//System.out.println("DB fetched: "+c.getId()+" "+c.getMake());
 		}
 		for (Car c : Dealership.carMap.values()) {
 			//System.out.println("allDealerCars: "+c.getId()+" "+c.getMake());
@@ -57,6 +48,7 @@ public class DealershipDBService implements DealershipDao {
 		    		updateCar(c, c.getOwner());
 		    	}
 		    } else {
+		    	//System.out.println("\nInserting Car: "+c.getId()+" "+c.getMake()+" :"+diffCars.get(c.getId()));
 		    	insertCar(c);
 		    	//TODO clean this up later if need be
 		    	if(c.getOwner() != null) {
@@ -71,7 +63,7 @@ public class DealershipDBService implements DealershipDao {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO CAR VALUES ("+c.getId()+",'"+c.getMake()+"','"+c.getModel()+"','"+
 		c.getColor()+"',"+c.getMakeYear()+","+c.getMsrp()+","+c.getOwner()+")";
-		//System.out.println("============================"+"\n"+sql+"=========================");
+		//System.out.println("=============="+"\n"+sql+"==================");
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
 		ps.close();
@@ -98,9 +90,10 @@ public class DealershipDBService implements DealershipDao {
 		Car c = null;
 		while(rS.next()) {
 			c = new Car(rS.getString(2), rS.getString(3), rS.getString(4), rS.getInt(5), rS.getDouble(6));
-			c.setId(rS.getInt(1)); //sets ID to the one stored in the DB manually,
-			Car.forceCounterDown(); //and prevents our id generator logic in Car.java from misbehaving
-			if(rS.getInt(7) == -1) {
+			c.setId(rS.getInt(1)); 
+			//System.out.println("Grabbing "+c.toString());
+			//Car.forceCounterDown(); 
+			if(rS.getInt(7) <= 0) {
 				c.setOwner(null);
 			}
 			
@@ -121,11 +114,11 @@ public class DealershipDBService implements DealershipDao {
 		
 		Map<String, Users> diffCust = grabUserMap();
 		for(Users u : diffCust.values()) {
-			System.out.println("diffCust "+u.getUserName()+" "+u.getUserID());
+			//System.out.println("diffCust "+u.getUserName()+" "+u.getUserID());
 		}
 		for (Users u : Dealership.userMap.values()) {
-			System.out.println("allDealerCust: "+u.getUserName()+" "+u.getUserID());
-		    if(!diffCust.containsValue(u)) {
+			//System.out.println("allDealerCust: "+u.getUserName()+" "+u.getUserID());
+		    if(!diffCust.containsValue(u) && u.getUserName() != null) {
 		    	insertUser(u);
 		    } 
 		}
@@ -144,7 +137,7 @@ public class DealershipDBService implements DealershipDao {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO DEALERSHIP_USER VALUES ("+u.getUserID()+",'"+u.getFirstName()+"','"+u.getLastName()+"','"+
 		u.getUserName()+"','"+u.getPassword()+"',"+0+")";
-		System.out.println("CUSTOMER: \n"+ sql);
+		//System.out.println("CUSTOMER: \n"+ sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
 		ps.close();
@@ -183,11 +176,12 @@ public class DealershipDBService implements DealershipDao {
 		
 		Map<Integer, Offer> diffOffer = grabOfferMap();
 		for(Offer o : diffOffer.values()) {
-			System.out.println("diffoffer "+o.getId()+" "+o.getStatus());
+			//System.out.println("diffoffer "+o.getId()+" "+o.getStatus());
 		}
 		for (Offer o : Dealership.offers.values()) {
-			System.out.println("allDealerOffers: "+o.getId()+" "+o.getStatus());
-		    if(!diffOffer.containsValue(o)) {
+			//System.out.println("allDealerOffers: "+o.getId()+" "+o.getStatus());
+			//System.out.println("Inserting Offer: "+o.getId()+" status: "+ o.getStatus()+ "isIn DB: "+diffOffer.containsKey(o.getId()));
+		    if(!diffOffer.containsKey(o.getId())) {
 		    	insertOffer(o);
 		    } 
 		}
@@ -197,6 +191,8 @@ public class DealershipDBService implements DealershipDao {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO OFFER VALUES ("+o.getId()+","+o.getStatus()+","+o.getCar().getId()+","+
 				o.getOfferAmmount()+","+o.getUserThatMadeOffer().getUserID()+","+o.getPaymentsRemaining()+","+o.getInterestRate()+")";
+		
+		
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
 		ps.close();
@@ -229,14 +225,15 @@ public class DealershipDBService implements DealershipDao {
 		Statement stmt = conn.createStatement();
 		ResultSet rS = stmt.executeQuery("SELECT * FROM OFFER");
 		Offer o = null;
-		//TODO add if statement depending on rS.getInt(6)
 		while(rS.next()) {
 			Customer cThatMadeOffer = (Customer) Dealership.userMap.get(new Integer(rS.getInt(5)));
 			Car attached = Dealership.carMap.get(new Integer(rS.getInt(3)));
 			
+			
 			o = new Offer(attached, rS.getInt(4),cThatMadeOffer,rS.getInt(6),rS.getInt(7));
 			o.setId(rS.getInt(1)); //sets ID to the one stored in the DB manually,
-			Offer.forceCounterDown(); //and prevents our id generator logic in Offer.java from misbehaving
+			
+			o.setStatus(rS.getInt(2));
 			oMap.put(new Integer(o.getId()), o);
 		}
 		rS.close();
@@ -259,29 +256,29 @@ public class DealershipDBService implements DealershipDao {
 	}
 	
 	public int getMaxUserID() throws SQLException {
-		int maxCarId = 0;
+		int maxId = 0;
 		Connection conn = cF.getConnection();
 		String sql = "SELECT MAX(USER_ID) FROM DEALERSHIP_USER";
 		Statement call = conn.createStatement();
 		ResultSet rS = call.executeQuery(sql);
 		rS.next();
-		maxCarId = rS.getInt(1);
+		maxId = rS.getInt(1);
 		rS.close();
 		conn.close();
-		return maxCarId;
+		return maxId;
 	}
 	
 	public int getMaxOfferID() throws SQLException {
-		int maxCarId = 0;
+		int maxId = 0;
 		Connection conn = cF.getConnection();
 		String sql = "SELECT MAX(OFFER_ID) FROM OFFER";
 		Statement call = conn.createStatement();
 		ResultSet rS = call.executeQuery(sql);
 		rS.next();
-		maxCarId = rS.getInt(1);
+		maxId = rS.getInt(1);
 		rS.close();
 		conn.close();
-		return maxCarId;
+		return maxId;
 	}
 
 }

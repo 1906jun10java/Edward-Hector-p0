@@ -33,9 +33,9 @@ public class CustomerFunctions extends UserFunctions {
 		try {
 			DealershipDBService dbsrv = new DealershipDBService();
 			newOffer.setId(dbsrv.getMaxOfferID()+1);
+			System.out.println("======="+newOffer.getId()+" user "+newOffer.getUserThatMadeOffer().getUserName()+" carID: "+newOffer.getCar().getId()+"=======");
 			Dealership.offers.put(newOffer.getId(), newOffer);
 			
-			System.out.println("========================"+newOffer.toString()+"===============================");
 			dbsrv.pushOfferMap();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block

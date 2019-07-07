@@ -145,7 +145,7 @@ public class Car {
 	}
 
 	public void setId(int int1) {
-		this.id = int1+1;
+		this.id = int1;
 		
 	}
 
