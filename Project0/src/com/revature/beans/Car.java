@@ -9,7 +9,7 @@ public class Car {
 	private int makeYear;
 	private double msrp;
 	private int id;
-	private static int ID=1;
+	private static int ID=0;
 	private Users owner;
 	
 	
@@ -143,7 +143,15 @@ public class Car {
 			return false;
 		return true;
 	}
-	
+
+	public void setId(int int1) {
+		this.id = int1;
+		
+	}
+
+	public static void forceCounterDown() {
+		ID--;
+	}
 	
 }
 	

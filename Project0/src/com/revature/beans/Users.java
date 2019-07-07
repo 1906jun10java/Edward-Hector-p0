@@ -14,9 +14,6 @@ public abstract class Users {
 	
 	public Users() {
 		super();
-		//empty constructor used to init Dealership Emp with reserved ID
-		this.userName = "Dealership";
-		this.userID = -1;
 	}
 	public Users(String userName, String password, String firstName, String lastName,String userType) {
 		super();
@@ -67,6 +64,7 @@ public abstract class Users {
 		return "Users [userName=" + userName + ", password=" + password + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", userID=" + userID + ", userType=" + userType + "]";
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,5 +116,13 @@ public abstract class Users {
 		return true;
 	}
 	
+	public void setId(int int1) {
+		this.userID = int1;
+		
+	}
+
+	public static void forceCounterDown() {
+		UID--;
+	}
 	
 }

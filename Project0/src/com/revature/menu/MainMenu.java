@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.revature.beans.Customer;
 import com.revature.beans.Dealership;
+import com.revature.beans.Users;
 
 public class MainMenu {
 
@@ -16,12 +17,22 @@ public class MainMenu {
 	}
 
 	public static void runMainMenu() {
+		Dealership.initMaps();
 		scanner=new Scanner(System.in);
+		/*
+		 * System.out.println("Welcome\nSelect on of the options");
+		 * System.out.println("1.Log In \n" + "2.Register \n" + "3.Close Program");
+		 * mainMenuCaseVar = scanner.nextInt();
+		 * 
+		 */
+		
+		for (Users u : Dealership.userMap.values()) {
+			System.out.println(u.toString());
+		}
 		System.out.println("Welcome\nSelect on of the options");
 		System.out.println("1.Log In \n" + "2.Register \n" + "3.Close Program");
 		mainMenuCaseVar = scanner.nextInt();
 		
-	
 		
 		Customer genericCustomer=new Customer();
 		Dealership.userMap.put(null, genericCustomer);
@@ -48,6 +59,8 @@ public class MainMenu {
 		}
 	}
 
-	
+	public static void main(String[] args) {
+		runMainMenu();
+	}
 
 }

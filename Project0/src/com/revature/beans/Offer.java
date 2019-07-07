@@ -4,17 +4,13 @@ public class Offer {
 	
 	private Car car;
 	private double offerAmmount;
-	private String status; 
+	private int status; //0-3
 	private int offerNumber;
 	private static int Number=1;
 	private Customer userThatMadeOffer;
 	private int numberOfPayments;
 	private double interestRate;
 	private int paymentsRemaining;
-	
-	
-	
-	
 
 	public Offer() {
 		super();
@@ -26,13 +22,11 @@ public class Offer {
 		super();
 		this.car = car;
 		this.offerAmmount = offerAmmount;
-		this.status = "pending";
+		this.status = 0;
 		this.userThatMadeOffer=user;
 		this.numberOfPayments=numberOfPayments;
 		this.paymentsRemaining = numberOfPayments;
 		this.interestRate=interestRate;
-		this.offerNumber=Number;
-		Number++;
 	}
 	
 	public int getPaymentsRemaining() {
@@ -73,16 +67,9 @@ public class Offer {
 	}
 
 
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	
-
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 
 	public void setPaymentsRemaining(int paymentsRemaining) {
 		this.paymentsRemaining = paymentsRemaining;
@@ -96,6 +83,22 @@ public class Offer {
 				+ ", interestRate=" + interestRate + ", paymentsRemaining=" + paymentsRemaining + "]";
 	}
 
+	public void setNumberOfPayments(int numberOfPayments) {
+		this.numberOfPayments = numberOfPayments;
+	}
+
+	public int getId() {
+		return this.offerNumber;
+	}
+	//Needed to prevent false increments when grabbing from DB
+	public void setId(int int1) {
+		this.offerNumber = int1;
+	}
+	//prevents ID from incrementing when grabbing cars from DB
+	public static void forceCounterDown() {
+		Number--;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -103,14 +106,10 @@ public class Offer {
 		int result = 1;
 		result = prime * result + ((car == null) ? 0 : car.hashCode());
 		long temp;
-		temp = Double.doubleToLongBits(interestRate);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + numberOfPayments;
 		temp = Double.doubleToLongBits(offerAmmount);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + offerNumber;
-		result = prime * result + paymentsRemaining;
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + status;
 		result = prime * result + ((userThatMadeOffer == null) ? 0 : userThatMadeOffer.hashCode());
 		return result;
 	}
@@ -130,20 +129,11 @@ public class Offer {
 				return false;
 		} else if (!car.equals(other.car))
 			return false;
-		if (Double.doubleToLongBits(interestRate) != Double.doubleToLongBits(other.interestRate))
-			return false;
-		if (numberOfPayments != other.numberOfPayments)
-			return false;
 		if (Double.doubleToLongBits(offerAmmount) != Double.doubleToLongBits(other.offerAmmount))
 			return false;
 		if (offerNumber != other.offerNumber)
 			return false;
-		if (paymentsRemaining != other.paymentsRemaining)
-			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
+		if (status != other.status)
 			return false;
 		if (userThatMadeOffer == null) {
 			if (other.userThatMadeOffer != null)
@@ -153,25 +143,9 @@ public class Offer {
 		return true;
 	}
 
-
-	public void setNumberOfPayments(int numberOfPayments) {
-		this.numberOfPayments = numberOfPayments;
+	public void setStatus(int i) {
+		this.status = i;
 	}
-
-
-
-
-	public int getId() {
-		return this.offerNumber;
-	}
-	//Needed to prevent false increments when grabbing from DB
-	public void setId(int int1) {
-		this.offerNumber = int1;
-	}
-	//prevents ID from incrementing when grabbing cars from DB
-	public static void forceCounterDown() {
-		Number--;
-	}
-
 
 }
+
