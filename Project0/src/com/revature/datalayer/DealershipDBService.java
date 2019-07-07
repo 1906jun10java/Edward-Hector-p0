@@ -21,7 +21,7 @@ public class DealershipDBService implements DealershipDao {
 
 	//might just make the whole thing static
 	public static void main(String[] args) {
-		
+
 	}
 	
 	@Override
@@ -101,8 +101,8 @@ public class DealershipDBService implements DealershipDao {
 
 	@Override
 	public void pushUserMap() throws SQLException {
-		
 		Map<String, Users> diffCust = grabUserMap();
+
 		for(Users u : diffCust.values()) {
 			//System.out.println("diffCust "+u.getUserName()+" "+u.getUserID());
 		}
@@ -132,12 +132,12 @@ public class DealershipDBService implements DealershipDao {
 		ps.executeQuery();
 		ps.close();
 		conn.close();
-		
 	}
 
 	@Override
 	public HashMap<String, Users> grabUserMap() throws SQLException {
 		Map<String, Users> uMap = new HashMap<String, Users>();
+
 		Connection conn = cF.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet rS = stmt.executeQuery("SELECT * FROM DEALERSHIP_USER");
@@ -181,8 +181,6 @@ public class DealershipDBService implements DealershipDao {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO OFFER VALUES ("+o.getId()+","+o.getStatus()+","+o.getCar().getId()+","+
 				o.getOfferAmmount()+","+o.getUserThatMadeOffer().getUserID()+","+o.getPaymentsRemaining()+","+o.getInterestRate()+")";
-		
-		
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
 		ps.close();
@@ -215,11 +213,10 @@ public class DealershipDBService implements DealershipDao {
 		Statement stmt = conn.createStatement();
 		ResultSet rS = stmt.executeQuery("SELECT * FROM OFFER");
 		Offer o = null;
+
 		while(rS.next()) {
 			Customer cThatMadeOffer = (Customer) Dealership.userMap.get(new Integer(rS.getInt(5)));
 			Car attached = Dealership.carMap.get(new Integer(rS.getInt(3)));
-			
-			
 			o = new Offer(attached, rS.getInt(4),cThatMadeOffer,rS.getInt(6),rS.getInt(7));
 			o.setId(rS.getInt(1)); //sets ID to the one stored in the DB manually,
 			

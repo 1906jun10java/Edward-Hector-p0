@@ -2,7 +2,6 @@ package com.revature.beans;
 
 import java.sql.SQLException;
 import java.util.Map;
-
 import com.revature.datalayer.DealershipDBService;
 
 public class Dealership {
@@ -13,6 +12,7 @@ public class Dealership {
 	
 	public static Map<Integer,Offer> offers;
 	
+
 	public static void initMaps() {
 		DealershipDBService dbsrv = new DealershipDBService();
 		try {

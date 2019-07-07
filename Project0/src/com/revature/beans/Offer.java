@@ -11,10 +11,6 @@ public class Offer {
 	private int numberOfPayments;
 	private double interestRate;
 	private int paymentsRemaining;
-	
-	
-	
-	
 
 	public Offer() {
 		super();
@@ -147,10 +143,9 @@ public class Offer {
 		return true;
 	}
 
-
 	public void setStatus(int i) {
 		this.status = i;
 	}
 
-
 }
+
