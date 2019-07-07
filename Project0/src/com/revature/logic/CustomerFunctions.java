@@ -31,8 +31,9 @@ public class CustomerFunctions extends UserFunctions {
 		thisCustomer.getMyPendingOffers().put(newOffer.getOfferNumber(),newOffer );
 		
 		try {
+			
 			DealershipDBService dbsrv = new DealershipDBService();
-			newOffer.setId(dbsrv.getMaxOfferID()+1);
+			newOffer.setId(dbsrv.getMaxOfferID()+1); //We are making our own ID sequencer within java
 			Dealership.offers.put(newOffer.getId(), newOffer);
 			
 			dbsrv.pushOfferMap();

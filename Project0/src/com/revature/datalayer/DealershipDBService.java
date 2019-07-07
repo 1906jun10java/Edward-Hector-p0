@@ -25,9 +25,10 @@ public class DealershipDBService implements DealershipDao {
 
 	//might just make the whole thing static
 	public static void main(String[] args) {
-		logger.trace("Entering application.");
-		System.out.println("Test");
-		logger.fatal("Exiting application.");
+		Dealership.initMaps();
+		for(Car c : Dealership.carMap.values()) {
+			System.out.println(c.getOwner());
+		}
 	}
 	
 	@Override
@@ -39,17 +40,13 @@ public class DealershipDBService implements DealershipDao {
 		}
 		for (Car c : Dealership.carMap.values()) {
 			//System.out.println("allDealerCars: "+c.getId()+" "+c.getMake());
-		    if(diffCars.containsValue(c)) {
+		    if(diffCars.containsKey(c.getId())) {
 		    	if(c.getOwner() != null) {
 		    		updateCar(c, c.getOwner());
 		    	}
 		    } else {
-		    	//System.out.println("\nInserting Car: "+c.getId()+" "+c.getMake()+" :"+diffCars.get(c.getId()));
+		    	//System.out.println("\nInserting Car: "+c.getId()+" "+c.getMake());
 		    	insertCar(c);
-		    	//TODO clean this up later if need be
-		    	if(c.getOwner() != null) {
-		    		updateCar(c, c.getOwner());
-		    	}
 		    }
 		}
 	}
@@ -58,7 +55,8 @@ public class DealershipDBService implements DealershipDao {
 	private void insertCar(Car c)  throws SQLException {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO CAR VALUES ("+c.getId()+",'"+c.getMake()+"','"+c.getModel()+"','"+
-		c.getColor()+"',"+c.getMakeYear()+","+c.getMsrp()+","+c.getOwner()+")";
+		c.getColor()+"',"+c.getMakeYear()+","+c.getMsrp()+","+null+")";
+		System.out.println(sql);
 		logger.trace("DBServ-insertCar() : "+sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
@@ -71,6 +69,7 @@ public class DealershipDBService implements DealershipDao {
 		//System.out.println("in update car");
 		Connection conn = cF.getConnection();
 		String sql = "UPDATE CAR SET OWNER_ID = "+u.getUserID()+"WHERE CAR_VIM = "+c.getId();
+		//System.out.println("UPDATING CAR"+sql);
 		CallableStatement call = conn.prepareCall(sql);
 		call.execute();
 		conn.close();
@@ -179,7 +178,10 @@ public class DealershipDBService implements DealershipDao {
 			//System.out.println("Inserting Offer: "+o.getId()+" status: "+ o.getStatus()+ "isIn DB: "+diffOffer.containsKey(o.getId()));
 		    if(!diffOffer.containsKey(o.getId())) {
 		    	insertOffer(o);
-		    } 
+		    }  else if(o.getStatus() != 0){
+		    	makePaymentOnOffer(o, o.getStatus());
+		    	updateOfferPayments(o);
+		    }
 		}
 	}
 	
@@ -198,8 +200,11 @@ public class DealershipDBService implements DealershipDao {
 	public void makePaymentOnOffer(Offer o, int status) throws SQLException {
 		int customerID = o.getUserThatMadeOffer().getUserID();
 		Connection conn = cF.getConnection();
-		String sql = "UPDATE OFFER SET OWNER_CUSTOMER = "+customerID+"WHERE OFFER_ID = "+o.getId();
+		String sql = "UPDATE OFFER SET OFFER_CUSTOMER = "+customerID+"WHERE OFFER_ID = "+o.getId();
 		CallableStatement call = conn.prepareCall(sql);
+		call.execute();
+		sql = "UPDATE OFFER SET OFFER_STATUS = "+status+"WHERE OFFER_ID = "+o.getId();
+		call = conn.prepareCall(sql);
 		call.execute();
 		conn.close();
 	}
@@ -207,6 +212,7 @@ public class DealershipDBService implements DealershipDao {
 	//call this to update DB with new payments left
 	public void updateOfferPayments(Offer o) throws SQLException{
 		Connection conn = cF.getConnection();
+		//System.out.println("Updating payments on offer..."+o.getId()+"  "+o.getPaymentsRemaining());
 		String sql = "UPDATE OFFER SET PAYMENTS_LEFT = "+o.getPaymentsRemaining()+"WHERE OFFER_ID = "+o.getId();
 		CallableStatement call = conn.prepareCall(sql);
 		call.execute();
@@ -220,9 +226,15 @@ public class DealershipDBService implements DealershipDao {
 		Statement stmt = conn.createStatement();
 		ResultSet rS = stmt.executeQuery("SELECT * FROM OFFER");
 		Offer o = null;
-
 		while(rS.next()) {
-			Customer cThatMadeOffer = (Customer) Dealership.userMap.get(new Integer(rS.getInt(5)));
+			String uName = "null"; 
+			for(Users u : Dealership.userMap.values()) {
+				if(u.getUserID() == rS.getInt(5)){
+					uName = u.getUserName();
+				}
+			}
+			Customer cThatMadeOffer = (Customer) Dealership.userMap.get(uName);
+			
 			Car attached = Dealership.carMap.get(new Integer(rS.getInt(3)));
 			o = new Offer(attached, rS.getInt(4),cThatMadeOffer,rS.getInt(6),rS.getInt(7));
 			o.setId(rS.getInt(1)); //sets ID to the one stored in the DB manually,

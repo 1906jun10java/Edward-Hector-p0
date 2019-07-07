@@ -18,4 +18,5 @@ public interface DealershipDao {
 	
 	public void pushOfferMap() throws SQLException;
 	public HashMap<Integer, Offer> grabOfferMap() throws SQLException;
+
 }

@@ -107,6 +107,8 @@ public class EmployeeFunctions extends UserFunctions {
 		} else {
 			System.out.println("This offer is no longer pending, this acction is invalid");
 		}
+		
+		uploadOffers();
 	}
 
 	public void rejectOffer(int offerID) {
@@ -120,6 +122,17 @@ public class EmployeeFunctions extends UserFunctions {
 		}
 		else {
 			System.out.println("Offer is not pending, invalid acction ");
+		}
+		uploadOffers();
+	}
+	
+	private void uploadOffers() {
+		try {
+			DealershipDBService dbsrv = new DealershipDBService();
+			dbsrv.pushOfferMap();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 
