@@ -48,10 +48,10 @@ public class DealershipDBService implements DealershipDao {
 	public void pushCarMap() throws SQLException {
 		Map<Integer,Car> diffCars = grabCarMap();
 		for(Car c : diffCars.values()) {
-			System.out.println(c.getId()+" "+c.getMake());
+			//System.out.println(c.getId()+" "+c.getMake());
 		}
 		for (Car c : Dealership.carMap.values()) {
-			System.out.println("allDealerCars: "+c.getId()+" "+c.getMake());
+			//System.out.println("allDealerCars: "+c.getId()+" "+c.getMake());
 		    if(diffCars.containsValue(c)) {
 		    	if(c.getOwner() != null) {
 		    		updateCar(c, c.getOwner());
@@ -71,7 +71,7 @@ public class DealershipDBService implements DealershipDao {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO CAR VALUES ("+c.getId()+",'"+c.getMake()+"','"+c.getModel()+"','"+
 		c.getColor()+"',"+c.getMakeYear()+","+c.getMsrp()+","+c.getOwner()+")";
-		System.out.println("============================"+"\n"+sql+"=========================");
+		//System.out.println("============================"+"\n"+sql+"=========================");
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
 		ps.close();
@@ -121,10 +121,10 @@ public class DealershipDBService implements DealershipDao {
 		
 		Map<String, Users> diffCust = grabUserMap();
 		for(Users u : diffCust.values()) {
-			//System.out.println("diffCust "+u.getUserName()+" "+u.getUserID());
+			System.out.println("diffCust "+u.getUserName()+" "+u.getUserID());
 		}
 		for (Users u : Dealership.userMap.values()) {
-			//System.out.println("allDealerCust: "+u.getUserName()+" "+u.getUserID());
+			System.out.println("allDealerCust: "+u.getUserName()+" "+u.getUserID());
 		    if(!diffCust.containsValue(u)) {
 		    	insertUser(u);
 		    } 
@@ -144,7 +144,7 @@ public class DealershipDBService implements DealershipDao {
 		Connection conn = cF.getConnection();
 		String sql = "INSERT INTO DEALERSHIP_USER VALUES ("+u.getUserID()+",'"+u.getFirstName()+"','"+u.getLastName()+"','"+
 		u.getUserName()+"','"+u.getPassword()+"',"+0+")";
-		//System.out.println("CUSTOMER: \n"+ sql);
+		System.out.println("CUSTOMER: \n"+ sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
 		ps.close();

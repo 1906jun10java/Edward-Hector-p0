@@ -37,7 +37,8 @@ public class RegisterMenu {
 		Dealership.userMap.put(username, newCustomer);
 		DealershipDBService dbsrv = new DealershipDBService();
 		try {
-			newCustomer.setId(dbsrv.getMaxUserID());
+			newCustomer.setId(dbsrv.getMaxUserID()+1);
+			System.out.println(newCustomer.toString());
 			dbsrv.pushUserMap();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

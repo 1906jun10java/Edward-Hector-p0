@@ -32,7 +32,7 @@ public class CustomerFunctions extends UserFunctions {
 		
 		try {
 			DealershipDBService dbsrv = new DealershipDBService();
-			newOffer.setId(dbsrv.getMaxOfferID());
+			newOffer.setId(dbsrv.getMaxOfferID()+1);
 			Dealership.offers.put(newOffer.getId(), newOffer);
 			
 			System.out.println("========================"+newOffer.toString()+"===============================");

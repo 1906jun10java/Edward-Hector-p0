@@ -9,7 +9,7 @@ public class Car {
 	private int makeYear;
 	private double msrp;
 	private int id;
-	private static int ID=1;
+	private static int ID=0;
 	private Users owner;
 	
 	

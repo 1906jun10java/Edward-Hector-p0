@@ -6,9 +6,6 @@ import java.util.Map;
 import com.revature.datalayer.DealershipDBService;
 
 public class Dealership {
-	public static Employee system = new Employee();
-	
-
 
 	public static Map<Integer,Car> carMap;
 	
