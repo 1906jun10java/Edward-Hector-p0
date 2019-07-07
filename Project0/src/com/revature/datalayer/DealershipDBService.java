@@ -21,17 +21,7 @@ public class DealershipDBService implements DealershipDao {
 
 	//might just make the whole thing static
 	public static void main(String[] args) {
-		DealershipDBService dbsrv = new DealershipDBService();
-		try {
-			Dealership.offers = dbsrv.grabOfferMap();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Done grabOfferMap");
-		for(Offer o : Dealership.offers.values()) {
-			System.out.println("Offer: "+o.getId()+" Car: "+o.getCar());
-		}
+		
 	}
 	
 	@Override
