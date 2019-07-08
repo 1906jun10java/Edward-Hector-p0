@@ -83,7 +83,7 @@ public class Car {
 	@Override
 	public String toString() {
 		return "Car [make=" + make + ", model=" + model + ", color=" + color + ", makeYear=" + makeYear + ", msrp="
-				+ msrp + ", id=" + id + ", owner=" + owner + "]";
+				+ msrp + ", id=" + id + ", owner=" + owner + "]\n";
 	}
 
 

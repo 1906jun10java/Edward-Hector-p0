@@ -11,8 +11,8 @@ public class CustomerMenu {
 		System.out.println("Hello " + LogInMenu.currentCustomer.getUserName());
 
 		while (true) {
-			System.out.println("1.See available cars \n2.See cars you own \n 3.See your pending offers"
-					+ "\n 4.Make an offer on a car \n5.Make payment \n 6.Log Out");
+			System.out.println(" 1.See available cars \n 2.See cars you own \n 3.See your pending offers"
+					+ "\n 4.Make an offer on a car \n 5.Make payment \n 6.Log Out");
 
 			while (MainMenu.scanner.hasNextInt() != true) {
 				System.out.println("Invalid input, please type an integer");
@@ -116,7 +116,7 @@ public class CustomerMenu {
 								&& o.getPaymentsRemaining() != 0) {
 							System.out.println("You are about to make a payment of " + AnnuityCalc.annuityCalc(o)
 									+ " for" + o.getCar().toString()
-									+ "\nWould you like to procede? \n1.Yes \n No (input any number)");
+									+ "\nWould you like to procede? \n 1.Yes \n No (input any number)");
 							while (MainMenu.scanner.hasNextInt() != true) {
 								System.out.println("Invalid input, please type an integer");
 								MainMenu.scanner.next();

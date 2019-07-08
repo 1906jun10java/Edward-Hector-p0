@@ -13,9 +13,9 @@ public class EmployeeMenu {
 
 		while (true) {
 			
-			System.out.println("1.Add Car to lot \n2.See pending offers \n 3.Reject offer"
+			System.out.println(" 1.Add Car to lot \n 2.See pending offers \n 3.Reject offer"
 					+ "\n 4.Accept Offer \n 5.See payments remaining on a car \n 6.See accepted offers"
-					+ " \n7. Log Out");
+					+ " \n 7. Log Out");
 
 			int userCaseVar = MainMenu.scanner.nextInt();
 
@@ -116,17 +116,15 @@ public class EmployeeMenu {
 							if(o.getCar().equals(carToWorkWith)) {
 								int paymentsLeft=o.getPaymentsRemaining();
 								System.out.println(c.getOwner().getFirstName()+" "+c.getOwner().getLastName()
-										+"has made"+(o.getNumberOfPayments()-paymentsLeft)+"of"+AnnuityCalc.annuityCalc(o)
-										+"of a total of"+o.getNumberOfPayments());
+										+" has made "+(o.getNumberOfPayments()-paymentsLeft)+" of "+AnnuityCalc.annuityCalc(o)
+										+" of a total of "+o.getNumberOfPayments());
 								
 							}
 						}
 					}
-					else {
-						System.out.println("The car you are looking for is either not registered here or"
-								+" it had not been sold.");
-					}
 				}
+				System.out.println("The car you are looking for is either not registered here or"
+						+" it had not been sold.");
 				
 				
 				//see accepted offers

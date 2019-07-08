@@ -80,7 +80,7 @@ public class Offer {
 	public String toString() {
 		return "Offer [car=" + car + ", offerAmmount=" + offerAmmount + ", status=" + status + ", offerNumber="
 				+ offerNumber + ", userThatMadeOffer=" + userThatMadeOffer + ", numberOfPayments=" + numberOfPayments
-				+ ", interestRate=" + interestRate + ", paymentsRemaining=" + paymentsRemaining + "]";
+				+ ", interestRate=" + interestRate + ", paymentsRemaining=" + paymentsRemaining + "]\n";
 	}
 
 	public void setNumberOfPayments(int numberOfPayments) {
