@@ -23,14 +23,6 @@ public class DealershipDBService implements DealershipDao {
 	public static ConnFactory cF = ConnFactory.getInstance();
 	private static Logger logger = (Logger) LogManager.getLogger();
 
-	//might just make the whole thing static
-	public static void main(String[] args) {
-		Dealership.initMaps();
-		for(Car c : Dealership.carMap.values()) {
-			System.out.println(c.getOwner());
-		}
-	}
-	
 	@Override
 	//To be called to push the current carMap in the Dealership into the database
 	public void pushCarMap() throws SQLException {
