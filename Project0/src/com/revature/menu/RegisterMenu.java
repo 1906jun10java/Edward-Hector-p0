@@ -1,7 +1,10 @@
 package com.revature.menu;
 
+import java.sql.SQLException;
+
 import com.revature.beans.Customer;
 import com.revature.beans.Dealership;
+import com.revature.datalayer.DealershipDBService;
 
 public class RegisterMenu {
 	
@@ -30,10 +33,21 @@ public class RegisterMenu {
 		
 		
 		Customer newCustomer=new Customer(username,password,firstName,lastName);
+		
 		Dealership.userMap.put(username, newCustomer);
+		DealershipDBService dbsrv = new DealershipDBService();
+		try {
+			newCustomer.setId(dbsrv.getMaxUserID()+1);
+			dbsrv.pushUserMap();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		System.out.println("Thank you for registering");
 		
 		MainMenu.mainMenuCaseVar=0;
+		
 		
 	}
 

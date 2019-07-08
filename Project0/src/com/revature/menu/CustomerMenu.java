@@ -9,10 +9,10 @@ public class CustomerMenu {
 
 	public static void runCustomerMenu() {
 		System.out.println("Hello " + LogInMenu.currentCustomer.getUserName());
-
+		Dealership.initMaps(); //refreshes maps when entering new menu to remain up to date
 		while (true) {
-			System.out.println("1.See available cars \n2.See cars you own \n 3.See your pending offers"
-					+ "\n 4.Make an offer on a car \n5.Make payment \n 6.Log Out");
+			System.out.println(" 1.See available cars \n 2.See cars you own \n 3.See your pending offers"
+					+ "\n 4.Make an offer on a car \n 5.Make payment \n 6.Log Out");
 
 			while (MainMenu.scanner.hasNextInt() != true) {
 				System.out.println("Invalid input, please type an integer");
@@ -111,19 +111,19 @@ public class CustomerMenu {
 				}
 				int carID = MainMenu.scanner.nextInt();
 				for (Offer o : Dealership.offers.values()) {
-					if (o.getCar().getId() == carID && o.getStatus().equals("accepted")) {
+					if (o.getCar().getId() == carID && o.getStatus() ==1) {
 						if (o.getUserThatMadeOffer().equals(LogInMenu.currentCustomer)
 								&& o.getPaymentsRemaining() != 0) {
 							System.out.println("You are about to make a payment of " + AnnuityCalc.annuityCalc(o)
 									+ " for" + o.getCar().toString()
-									+ "\nWould you like to procede? \n1.Yes \n No (input any number)");
+									+ "\nWould you like to procede? \n 1.Yes \n No (input any number)");
 							while (MainMenu.scanner.hasNextInt() != true) {
 								System.out.println("Invalid input, please type an integer");
 								MainMenu.scanner.next();
 							}
 							int yesNo = MainMenu.scanner.nextInt();
 							if (yesNo == 1) {
-								o.setPaymentsRemaining(o.getNumberOfPayments() - 1);
+								o.setPaymentsRemaining(o.getPaymentsRemaining() - 1);
 								break;
 							} else {
 								System.out.println("ok, no payment will be made");
@@ -142,6 +142,7 @@ public class CustomerMenu {
 
 			// log out
 			else if (userCaseVar == 6) {
+				Dealership.pushAllMaps();
 				MainMenu.mainMenuCaseVar = 0;
 				break;
 			}

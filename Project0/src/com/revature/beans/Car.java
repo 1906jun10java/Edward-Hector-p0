@@ -9,8 +9,9 @@ public class Car {
 	private int makeYear;
 	private double msrp;
 	private int id;
-	private static int ID=1;
+	private static int ID=0;
 	private Users owner;
+	private boolean deleteMe = false;
 	
 	
 	public Car() {
@@ -83,7 +84,7 @@ public class Car {
 	@Override
 	public String toString() {
 		return "Car [make=" + make + ", model=" + model + ", color=" + color + ", makeYear=" + makeYear + ", msrp="
-				+ msrp + ", id=" + id + ", owner=" + owner + "]";
+				+ msrp + ", id=" + id + ", owner=" + owner + "]\n";
 	}
 
 
@@ -145,7 +146,7 @@ public class Car {
 	}
 
 	public void setId(int int1) {
-		this.id = int1+1;
+		this.id = int1;
 		
 	}
 
@@ -153,9 +154,12 @@ public class Car {
 		ID--;
 	}
 	
-	public static void setIDSeed(int seed) {
-		System.out.println("setIDSEE()");
-		ID = seed+1;
+	public boolean flaggedForDelete() {
+		return this.deleteMe;
+	}
+	
+	public void flagForDeletion() {
+		this.deleteMe = true;
 	}
 	
 }

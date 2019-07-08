@@ -11,10 +11,6 @@ public class Offer {
 	private int numberOfPayments;
 	private double interestRate;
 	private int paymentsRemaining;
-	
-	
-	
-	
 
 	public Offer() {
 		super();
@@ -31,8 +27,6 @@ public class Offer {
 		this.numberOfPayments=numberOfPayments;
 		this.paymentsRemaining = numberOfPayments;
 		this.interestRate=interestRate;
-		this.offerNumber=Number;
-		Number++;
 	}
 	
 	public int getPaymentsRemaining() {
@@ -86,7 +80,7 @@ public class Offer {
 	public String toString() {
 		return "Offer [car=" + car + ", offerAmmount=" + offerAmmount + ", status=" + status + ", offerNumber="
 				+ offerNumber + ", userThatMadeOffer=" + userThatMadeOffer + ", numberOfPayments=" + numberOfPayments
-				+ ", interestRate=" + interestRate + ", paymentsRemaining=" + paymentsRemaining + "]";
+				+ ", interestRate=" + interestRate + ", paymentsRemaining=" + paymentsRemaining + "]\n";
 	}
 
 	public void setNumberOfPayments(int numberOfPayments) {
@@ -149,10 +143,9 @@ public class Offer {
 		return true;
 	}
 
-
 	public void setStatus(int i) {
 		this.status = i;
 	}
 
-
 }
+

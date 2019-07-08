@@ -10,12 +10,12 @@ import com.revature.logic.AnnuityCalc;
 public class EmployeeMenu {
 	public static void runEmployeeMenu() {
 		System.out.println("Hello " + LogInMenu.currentEmployee.getUserName());
-
+		Dealership.initMaps(); //refreshes maps when entering new menu to remain up to date
 		while (true) {
 			
-			System.out.println("1.Add Car to lot \n2.See pending offers \n 3.Reject offer"
+			System.out.println(" 1.Add Car to lot \n 2.See pending offers \n 3.Reject offer"
 					+ "\n 4.Accept Offer \n 5.See payments remaining on a car \n 6.See accepted offers"
-					+ " \n7. Log Out");
+					+ "\n 7.Remove Car \n 8. Log Out");
 
 			int userCaseVar = MainMenu.scanner.nextInt();
 
@@ -109,6 +109,7 @@ public class EmployeeMenu {
 				}
 				int carID = MainMenu.scanner.nextInt();
 				
+				boolean foundCar = false;
 				for (Car c : Dealership.carMap.values()) {
 					if (c.getId()==carID && c.getOwner()!=null) {
 						Car carToWorkWith=c;
@@ -116,16 +117,16 @@ public class EmployeeMenu {
 							if(o.getCar().equals(carToWorkWith)) {
 								int paymentsLeft=o.getPaymentsRemaining();
 								System.out.println(c.getOwner().getFirstName()+" "+c.getOwner().getLastName()
-										+"has made"+(o.getNumberOfPayments()-paymentsLeft)+"of"+AnnuityCalc.annuityCalc(o)
-										+"of a total of"+o.getNumberOfPayments());
-								
+										+" has made "+(o.getNumberOfPayments()-paymentsLeft)+" of "+AnnuityCalc.annuityCalc(o)
+										+" of a total of "+o.getNumberOfPayments());
+								foundCar = true;
 							}
 						}
 					}
-					else {
-						System.out.println("The car you are looking for is either not registered here or"
-								+" it had not been sold.");
-					}
+				}
+				if(!foundCar) {
+					System.out.println("The car you are looking for is either not registered here or"
+						+" it has not been sold.");
 				}
 				
 				
@@ -138,9 +139,46 @@ public class EmployeeMenu {
 				}
 
 				userCaseVar = 0;
-				//log out
-			}else if (userCaseVar == 7) {
+			//Option to delete car now added, uses the ID of the car and will delete all rejected offers
+			//on that car. It will NOT delete that car if there are non-rejected offers on that car
+			} else if (userCaseVar == 7){
+				System.out.println("The car id number?");
+
+				while (MainMenu.scanner.hasNextInt() != true) {
+					System.out.println("Invalid input, please type an integer");
+					MainMenu.scanner.next();
+				}
+				int carID = MainMenu.scanner.nextInt();
+				boolean deletionCompleted = false;
+				for (Car c : Dealership.carMap.values()) {
+					boolean foundOfferOnCar = false;
+					boolean rejected = false;
+					if (c.getId()==carID && c.getOwner()==null) {
+						for(Offer o:Dealership.offers.values()) {
+							if(o.getCar().getId() == c.getId()) {
+								foundOfferOnCar = true;
+								if(o.getStatus() == 2) {
+									rejected = true;
+								}
+							} 
+						}
+						if(!foundOfferOnCar || rejected) {
+							c.flagForDeletion();
+							deletionCompleted = true;
+						} 
+						break;
+					}
+				}
+				if(deletionCompleted) {
+					Dealership.pushAllMaps();
+					System.out.println("Deletion successful.");
+				} else {
+					System.out.println("Car could not be deleted, either no such car exists or "
+							+ "there are currently pending offers on that car.");
+				}
+			} else if (userCaseVar == 8) {
 				MainMenu.mainMenuCaseVar = 0;
+				Dealership.pushAllMaps();
 				break;
 			}
 

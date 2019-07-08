@@ -25,14 +25,15 @@ public class EmployeeFunctions extends UserFunctions {
 	public void addCar(String make, String model, String color, int makeYear, double msrp) {
 		Car newCar = new Car(make, model, color, makeYear, msrp);
 
-		Dealership.carMap.put(newCar.getId(), newCar);
 		
-		DealershipDBService dbsrv = new DealershipDBService();
 		try {
+			DealershipDBService dbsrv = new DealershipDBService();
+			newCar.setId(dbsrv.getMaxCarID()+1);
+			Dealership.carMap.put(newCar.getId(), newCar);
 			dbsrv.pushCarMap();
-		} catch (SQLException e) {
+		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
 	}
 	/*
@@ -106,6 +107,8 @@ public class EmployeeFunctions extends UserFunctions {
 		} else {
 			System.out.println("This offer is no longer pending, this acction is invalid");
 		}
+		
+		uploadOffers();
 	}
 
 	public void rejectOffer(int offerID) {
@@ -119,6 +122,17 @@ public class EmployeeFunctions extends UserFunctions {
 		}
 		else {
 			System.out.println("Offer is not pending, invalid acction ");
+		}
+		uploadOffers();
+	}
+	
+	private void uploadOffers() {
+		try {
+			DealershipDBService dbsrv = new DealershipDBService();
+			dbsrv.pushOfferMap();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 
