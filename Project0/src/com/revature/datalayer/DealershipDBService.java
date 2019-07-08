@@ -172,15 +172,11 @@ public class DealershipDBService implements DealershipDao {
 
 	@Override
 	public void pushOfferMap() throws SQLException {
-		
 		Map<Integer, Offer> diffOffer = grabOfferMap();
-		for(Offer o : diffOffer.values()) {
-			//System.out.println("diffoffer "+o.getId()+" "+o.getStatus());
-		}
 		for (Offer o : Dealership.offers.values()) {
 			//System.out.println("allDealerOffers: "+o.getId()+" "+o.getStatus());
 			//System.out.println("Inserting Offer: "+o.getId()+" status: "+ o.getStatus()+ "isIn DB: "+diffOffer.containsKey(o.getId()));
-		    if(!diffOffer.containsKey(o.getId())) {
+		    if(!diffOffer.containsKey(o.getId()) && Dealership.carMap.containsKey(o.getCar().getId())) {
 		    	insertOffer(o);
 		    }  else if(o.getStatus() != 0){
 		    	makePaymentOnOffer(o, o.getStatus());

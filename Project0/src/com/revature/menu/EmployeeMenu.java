@@ -149,7 +149,6 @@ public class EmployeeMenu {
 				}
 				int carID = MainMenu.scanner.nextInt();
 				boolean deletionCompleted = false;
-				
 				for (Car c : Dealership.carMap.values()) {
 					boolean foundOfferOnCar = false;
 					boolean rejected = false;
@@ -159,13 +158,11 @@ public class EmployeeMenu {
 								foundOfferOnCar = true;
 								if(o.getStatus() == 2) {
 									rejected = true;
-									Dealership.offers.remove(o.getId());
 								}
 							} 
 						}
 						if(!foundOfferOnCar || rejected) {
 							c.flagForDeletion();
-							System.out.println("isflagged "+c.flaggedForDelete());
 							deletionCompleted = true;
 						} 
 						break;
