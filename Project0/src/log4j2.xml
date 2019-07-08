@@ -18,7 +18,7 @@
     </Appenders>
     <Loggers>
         <!-- avoid duplicated logs with additivity=false -->
-        <Logger name="com.revature.datalayer.DealershipDBService" level="ERROR" additivity="false">
+        <Logger name="com.revature.datalayer.DealershipDBService" level="INFO" additivity="false">
             <AppenderRef ref="LogToFile"/>
         </Logger>
         <Logger name="com.revature.datalayer.DealershipDBService" level="TRACE" additivity="false">

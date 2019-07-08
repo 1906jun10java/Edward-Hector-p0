@@ -17,6 +17,7 @@ public class Dealership {
 	public static void initMaps() {
 		DealershipDBService dbsrv = new DealershipDBService();
 		try {
+			System.out.println("...Updating local maps...");
 			userMap = dbsrv.grabUserMap();
 			carMap = dbsrv.grabCarMap();
 			offers = dbsrv.grabOfferMap();
@@ -25,6 +26,18 @@ public class Dealership {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void pushAllMaps() {
+		DealershipDBService dbsrv = new DealershipDBService();
+		try {
+			dbsrv.pushCarMap();
+			dbsrv.pushOfferMap();
+			dbsrv.pushUserMap();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

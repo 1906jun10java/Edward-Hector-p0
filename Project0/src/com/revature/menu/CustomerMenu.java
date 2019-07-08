@@ -9,7 +9,7 @@ public class CustomerMenu {
 
 	public static void runCustomerMenu() {
 		System.out.println("Hello " + LogInMenu.currentCustomer.getUserName());
-
+		Dealership.initMaps(); //refreshes maps when entering new menu to remain up to date
 		while (true) {
 			System.out.println(" 1.See available cars \n 2.See cars you own \n 3.See your pending offers"
 					+ "\n 4.Make an offer on a car \n 5.Make payment \n 6.Log Out");

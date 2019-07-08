@@ -28,10 +28,15 @@ public class DealershipDBService implements DealershipDao {
 	public void pushCarMap() throws SQLException {
 		Map<Integer,Car> diffCars = grabCarMap();
 		for (Car c : Dealership.carMap.values()) {
-			//System.out.println("allDealerCars: "+c.getId()+" "+c.getMake());
+			//System.out.println("allDealerCars: "+c.getId()+" "+c.getMake()+" del:"+c.flaggedForDelete());
 		    if(diffCars.containsKey(c.getId())) {
 		    	if(c.getOwner() != null) {
 		    		updateCar(c, c.getOwner());
+		    	} else {
+		    		if(c.flaggedForDelete()) {
+		    			removeCar(c);
+		    			Dealership.carMap.remove(c.getId(), c); //if properly refreshed this may not be necessary
+		    		}
 		    	}
 		    } else {
 		    	insertCar(c);
@@ -42,7 +47,8 @@ public class DealershipDBService implements DealershipDao {
 	//set Dealership.carMap = grabCarMap() after this is called
 	public void removeCar(Car c) throws SQLException {
 		Connection conn = cF.getConnection();
-		String sql = "DELETE FROM CAR WHERE CAR_ID = "+c.getId();
+		removeOffer(c);
+		String sql = "DELETE FROM CAR WHERE CAR_VIM = "+c.getId();
 		logger.trace("DBServ-removeCar() : "+sql);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.executeQuery();
@@ -181,6 +187,17 @@ public class DealershipDBService implements DealershipDao {
 		    	updateOfferPayments(o);
 		    }
 		}
+	}
+	
+	//used when deleting a car (as car is unique FK in Offer)
+	private void removeOffer(Car c) throws SQLException {
+		Connection conn = cF.getConnection();
+		int carId = c.getId();
+		String sql = "{call DELETE_OFFERS_FOR_CAR(?)";
+		CallableStatement call = conn.prepareCall(sql);
+		call.setInt(1, carId); 
+		call.execute();
+		conn.close();
 	}
 	
 	private void insertOffer(Offer o) throws SQLException {

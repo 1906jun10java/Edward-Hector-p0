@@ -11,6 +11,7 @@ public class Car {
 	private int id;
 	private static int ID=0;
 	private Users owner;
+	private boolean deleteMe = false;
 	
 	
 	public Car() {
@@ -151,6 +152,14 @@ public class Car {
 
 	public static void forceCounterDown() {
 		ID--;
+	}
+	
+	public boolean flaggedForDelete() {
+		return this.deleteMe;
+	}
+	
+	public void flagForDeletion() {
+		this.deleteMe = true;
 	}
 	
 }
