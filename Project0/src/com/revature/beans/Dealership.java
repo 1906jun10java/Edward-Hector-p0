@@ -32,6 +32,7 @@ public class Dealership {
 	
 	public static void pushAllMaps() {
 		DealershipDBService dbsrv = new DealershipDBService();
+		System.out.println("...Pushing all local changes to Database...");
 		try {
 			dbsrv.pushCarMap();
 			dbsrv.pushOfferMap();

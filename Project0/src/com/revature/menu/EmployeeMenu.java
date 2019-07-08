@@ -139,7 +139,8 @@ public class EmployeeMenu {
 				}
 
 				userCaseVar = 0;
-				//log out
+			//Option to delete car now added, uses the ID of the car and will delete all rejected offers
+			//on that car. It will NOT delete that car if there are non-rejected offers on that car
 			} else if (userCaseVar == 7){
 				System.out.println("The car id number?");
 
@@ -177,6 +178,7 @@ public class EmployeeMenu {
 				}
 			} else if (userCaseVar == 8) {
 				MainMenu.mainMenuCaseVar = 0;
+				Dealership.pushAllMaps();
 				break;
 			}
 

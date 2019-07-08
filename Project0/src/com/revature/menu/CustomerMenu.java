@@ -123,7 +123,7 @@ public class CustomerMenu {
 							}
 							int yesNo = MainMenu.scanner.nextInt();
 							if (yesNo == 1) {
-								o.setPaymentsRemaining(o.getNumberOfPayments() - 1);
+								o.setPaymentsRemaining(o.getPaymentsRemaining() - 1);
 								break;
 							} else {
 								System.out.println("ok, no payment will be made");
@@ -142,6 +142,7 @@ public class CustomerMenu {
 
 			// log out
 			else if (userCaseVar == 6) {
+				Dealership.pushAllMaps();
 				MainMenu.mainMenuCaseVar = 0;
 				break;
 			}

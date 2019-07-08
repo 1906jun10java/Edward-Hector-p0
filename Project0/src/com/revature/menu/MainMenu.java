@@ -28,16 +28,14 @@ public class MainMenu {
 		 * 
 		 */
 		
+		//I'll forget what the usernames and passwords are, so print them out.
 		for (Users u : Dealership.userMap.values()) {
 			System.out.println(u.toString());
 		}
-		System.out.println("Welcome\nSelect on of the options");
-		System.out.println("1.Log In \n" + "2.Register \n" + "3.Close Program");
-		mainMenuCaseVar = scanner.nextInt();
 		
 		
-		Customer genericCustomer=new Customer();
-		Dealership.userMap.put(null, genericCustomer);
+//		Customer genericCustomer=new Customer();
+//		Dealership.userMap.put(null, genericCustomer);
 		while (true) {
 			
 			System.out.println("Welcome\nSelect on of the options");
